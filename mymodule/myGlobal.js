@@ -63,11 +63,11 @@ global.PATH_WAREHOUSE_OUT = '/warehouse-out'
 // ทดสอบกับ tualeklek ใช้ 80 เท่านั้น - แก้ให้ตรงกับใช้งานจริง
 // ใช้งานจริงบน VPS แบบ Subdomain ให้สร้าง Subdomain ก่อน - ดูเรื่อง nginx 
 global.SYSTEM_START = {
-  PORT_SERVER: 80, 
-  PORT_DEV: 80, 
+  PORT_SERVER: 82, 
+  PORT_DEV: 82, 
   DEPLOY: 1, // 0 = dev, 1 = prod-ต้องเป็น 1 เลย ไม่เช่นนั้นเข้าจากโดเมนไม่ได้  
   LOCALHOST_ALLOW: 'http://localhost',
-  DOMAIN_ALLOW: 'https://tualeklek.com', 
+  DOMAIN_ALLOW: 'https://mpos.wasankds.com', 
 }
 // ค่าคงที่
 //=== นโยบาย
