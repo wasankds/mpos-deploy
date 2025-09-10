@@ -1,0 +1,110 @@
+
+<form id="formTab1" autocomplete="off" 
+      action="<%= PATH_SAVE %>" 
+      method="post"
+      onsubmit="createSpinner()">
+
+  <!--  -->      
+  <section>    
+
+    <!-- COMPANY_NAME -->
+    <div class="input-group">
+      <label title="COMPANY_NAME">* ไทเทิ้ลหน้าแรก</label> 
+      <input class="pd-l-m" type="text" 
+             name="COMPANY_NAME" id="COMPANY_NAME" 
+             value="<%= dataSettings?.COMPANY_NAME ?? '' %>"
+             placeholder="COMPANY_NAME">
+    </div>
+
+    <!-- 
+    *******************************************************
+    *******************************************************
+    *******************************************************
+    ******************** เปิดใช้งานเมนุ  *********************
+    *******************************************************
+    *******************************************************
+    *******************************************************
+    -->    
+
+    <div class="mg-t-l">
+      <label>
+        <i class="fas fa-toggle-on mg-r-m fc-blue"></i>
+        <span class="fc-blue">เปิดใช้งานเมนู</span>
+      </label>
+    </div>
+
+    <!-- SETTINGS_SYSTEM -->
+    <div>
+      <label class="cb-ctn al-l" title="SETTINGS_SYSTEM">
+        <span>ตั้งค่าระบบครั้งแรก</span>
+        <input type="checkbox" 
+                id="SETTINGS_SYSTEM" name="SETTINGS_SYSTEM" 
+                <%= dataSettings?.SETTINGS_SYSTEM == 'on' ? 'checked' : '' %> >
+        <span style="left:1px" class="cb-checkmark"></span>
+      </label>
+    </div>
+
+
+    <!-- TERM_AND_CONDITION -->
+    <div class=" ">
+      <label class="cb-ctn al-l" title="TERM_AND_CONDITION">
+        <span>ข้อกำหนดและเงื่อนไข</span>
+        <input type="checkbox" 
+               name="TERM_AND_CONDITION" 
+               <%= dataSettings?.TERM_AND_CONDITION === 'on' ? 'checked' : '' %> >
+        <span style="left:1px" class="cb-checkmark"></span>
+      </label>
+    </div>
+
+
+    <!-- 
+    *******************************************************
+    *******************************************************
+    *******************************************************
+    ************************** เฉพาะ O ********************
+    *******************************************************
+    *******************************************************
+    *******************************************************
+    -->
+
+    <% if(['O'].includes(user.userAuthority)) { %>
+
+    <hr class="mg-t-xxl bt-d">
+
+    <div class="al-c">
+      <label class="fc-blue">เฉพาะ O</label>
+    </div>
+
+    <!-- EMAIL_WHOSEND -->
+    <div class="input-group">
+      <label title="EMAIL_WHOSEND">ชื่อสำหรับส่งอีเมล</label> 
+      <input class="pd-l-m" type="email"
+              value="<%= dataSettings?.EMAIL_WHOSEND ?? '' %>"
+              id="EMAIL_WHOSEND" name="EMAIL_WHOSEND" 
+              required placeholder="ชื่อสำหรับส่งอีเมล">
+    </div>
+
+    <!-- EMAIL_PASS -->
+    <div class="input-group">
+      <label title="EMAIL_PASS">รหัสส่งอีเมลสำหรับแอปพลิเคชัน</label> 
+      <input class="pd-l-m" type="text" minlength="19" 
+              value="<%= dataSettings?.EMAIL_PASS ?? '' %>"
+              id="EMAIL_PASS" name="EMAIL_PASS" 
+              required placeholder="รหัสส่งอีเมลสำหรับแอปพลิเคชัน">
+    </div>
+
+  </section>
+
+  <% } %>    
+
+  <!-- Buttons/Save -->
+  <section class="flex-row justify-content-center mg-t-xxl">
+    <button class="btn btn-sm bg-save" type="submit">
+      <i class="fas fa-save"></i> บันทึก
+    </button>
+  </section>
+
+</form>
+
+
+
