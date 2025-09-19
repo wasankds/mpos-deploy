@@ -5,9 +5,9 @@
   "description": "",
   "main": "mpos.js",
   "scripts": {
+    "use_nvm": "nvm use 22.16.0",
     "1": "node min_css_js.js",
     "2": "node delete_min_js.js",
-    "use_nvm": "nvm use 22.16.0",
     "mr": "node min_routes.js",
     "mm": "node min_mymodule.js",
     "cf": "node create_folders.js",
