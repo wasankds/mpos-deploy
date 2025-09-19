@@ -32,6 +32,7 @@
 
   <main>
 
+    <% if (user.userAuthority == 'O') { %>
     <section class="main-title">
       <h1 class="al-c">
         <i class="fas fa-cog mg-r-m"></i> 
@@ -106,6 +107,8 @@
       </section>
 
     </form>
+
+    <% } %>
 
     <section class="main-title bt pd-t-xxl">
       <h1 class="al-c">

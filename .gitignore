@@ -4,10 +4,10 @@ dbProcessExcel
 
 # ลบการติดตามโฟลเดอร์ที่เคยตามออกไป
 # git rm -r --cached items
-items
-warehouse-in
-warehouse-out
-sales
+# docs
+# items
+# warehouse-in
+# warehouse-out
 
 
 # Logs

@@ -16,12 +16,13 @@ const sourceProject = 'D:\\aWK_LeaseSystem\\MPOS';
 //=== โฟลเดอร์ที่จะก๊อปปี้ ใช้กับทั้งต้นทาง และ ปลายทาง
 const folderNames = [
   // โฟลเดอร์ระบบ
-  'middleware', 'mymodule', 'routes-min',  'views',  
+  'middleware', 'routes-min', 'mymodule-min',  'views',  
   // โฟลเดอร์ public แยกย่อยด้วย 
   'public/cdn', 'public/css-min', 'public/fonts', 'public/images', 'public/js-min', 'public/static', 
   // โฟลเดอร์สำหรับเก็บข้อมูลเอนทิตี้ 
   'items', 'warehouse-in', 'warehouse-out' ,'sales',
 ];
+
 //=== ไฟล์ที่จะก๊อปปี้ ใช้กับทั้งต้นทาง และ ปลายทาง
 const fileNames = ['mpos.js', 'package.json', 'README.md', 'create_folders.js', '.gitignore'];
 

@@ -8,8 +8,9 @@
     "use_nvm": "nvm use 22.16.0",
     "1": "node min_css_js.js",
     "2": "node delete_min_js.js",
-    "3": "node min_routes.js",
-    "4": "node create_folders.js",
+    "mr": "node min_routes.js",
+    "mm": "node min_mymodule.js",
+    "cf": "node create_folders.js",
     "dev": "nodemon mpos.js",
     "app": "node mpos.js",
     "kill": "taskkill /f /im node.exe",
@@ -18,7 +19,8 @@
     "delete": "pm2 delete mpos.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clear_db": "node clear_db.js",
-    "insert_data2db": "node insert_data2db.js"
+    "insert_data2db": "node insert_data2db.js",
+    "git1": "git add . && git commit -m \"%date% %time%\" && git push origin main"
   },
   "keywords": [],
   "author": "",

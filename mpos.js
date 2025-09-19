@@ -63,9 +63,13 @@ app.use((req, res, next) => {
   next()
 })
 const routesFolder = IS_PRODUCTION ? 'routes-min' : 'routes'
+global.mymoduleFolder = IS_PRODUCTION ? 'mymodule-min' : 'mymodule'
+// เปิดใช้ตอนเซ็ตระบบเท่านั้น เปิด/เปิดใน .env
+if( process.env.USE_STARTAPP_ROUTER == 1 ) {
+  app.use((await import(`./${routesFolder}/startAppRouter.js`)).default) 
+}
 app.use((await import(`./${routesFolder}/homeRouter.js`)).default) 
 app.use((await import(`./${routesFolder}/loginRouter.js`)).default)
-app.use((await import(`./${routesFolder}/startAppRouter.js`)).default) // เปิดใช้ตอนเซ็ตระบบเท่านั้น
 app.use((await import(`./${routesFolder}/manageSettingsRouter.js`)).default)
 app.use((await import(`./${routesFolder}/manageSettingsSystemRouter.js`)).default)
 app.use((await import(`./${routesFolder}/manageSessionsRouter.js`)).default)
@@ -78,7 +82,7 @@ app.use((await import(`./${routesFolder}/itemsCategoryRouter.js`)).default);
 app.use((await import(`./${routesFolder}/docGeneralRouter.js`)).default)
 app.use((await import(`./${routesFolder}/docMainRouter.js`)).default);
 app.use((await import(`./${routesFolder}/reportDocsRouter.js`)).default);
-app.use((await import(`./${routesFolder}/reportItemsRouter.js`)).default);
+// app.use((await import(`./${routesFolder}/reportItemsRouter.js`)).default); // ยังไม้่ได้ทำ - สำหรับเวอร์ชั่นจ่ายเงิน
 app.use( (err, req, res, next) => {
   res.status(err.status || 500);
   const errHtml = `<h1 style="color:blue">กำลังอัปเดทข้อมูล</h1>
@@ -94,8 +98,8 @@ app.get('*', (req,res) => {
 //=== Start the server
 app.listen(PORT, () => {
   console.log(`========== Server@${DOMAIN_ALLOW} ===========`)
-  console.log("IS_PRODUCTION ", global.IS_PRODUCTION)
-  console.log("global.DOMAIN_ALLOW ", global.DOMAIN_ALLOW)
+  console.log("- IS_PRODUCTION ", global.IS_PRODUCTION)
+  console.log("- global.DOMAIN_ALLOW ", global.DOMAIN_ALLOW)
 })
 
 
