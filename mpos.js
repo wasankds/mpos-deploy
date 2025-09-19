@@ -5,14 +5,14 @@ import cookieParser from 'cookie-parser' ;
 import flash from 'connect-flash' ; 
 import { MongoClient } from 'mongodb' ; 
 import MongoDBSession from 'connect-mongodb-session'  ; 
-import './mymodule/myGlobal.js' ;  // กำหนด global ตัวแปรต่างๆ
-import './mymodule/myDbStart.js' ; // สร้าง index ให้กับ collection ต่างๆ
 global.IS_PRODUCTION = process.env.IS_PRODUCTION == 1 ? true : false ;
 global.PROJECT_DIR = process.cwd()
 global.dbName = process.env.DB_NAME
 global.dbUrl = process.env.DB_URL
 global.mymoduleFolder = global.IS_PRODUCTION ? 'mymodule-min' : 'mymodule'
 const routesFolder = global.IS_PRODUCTION ? 'routes-min' : 'routes'
+await import(`./${mymoduleFolder}/myGlobal.js`) // กำหนด global ตัวแปรต่างๆ
+await import(`./${mymoduleFolder}/myDbStart.js`) // สร้าง index ให้กับ collection ต่างๆ
 await import(`./${mymoduleFolder}/mySchedule.js`) // รันปิดเอกสารตอนตี2ทุกวัน 
 const app = express()
 async function loadSettingSystemStart() {
