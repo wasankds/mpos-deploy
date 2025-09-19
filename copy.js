@@ -23,8 +23,8 @@ const folderNames = [
   'items', 'warehouse-in', 'warehouse-out' ,'sales',
 ];
 
-//=== ไฟล์ที่จะก๊อปปี้ ใช้กับทั้งต้นทาง และ ปลายทาง
-const fileNames = ['mpos.js', 'package.json', 'README.md', 'create_folders.js', '.gitignore'];
+//=== ไฟล์ที่จะก๊อปปี้ ใช้กับทั้งต้นทาง และ ปลายทาง - .gitignore ไฟล์นี้ไม่ต้องก๊อปปี้
+const fileNames = ['mpos.js', 'package.json', 'README.md', 'create_folders.js'];
 
 //=== สร้าางตัวแปรใหม่ที่มีโครงสร้าง
 //  { copyType: 'folder' | 'file', source: 'path', destination: 'path' }
