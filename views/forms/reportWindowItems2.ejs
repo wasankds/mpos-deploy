@@ -1,0 +1,86 @@
+<!--  -->
+<!-- <section class="window-ctn pd-xs col-100" > -->
+
+<!-- 
+<div class="window-title bg-window-2" name="windowTitle">
+  <p class="bg-cornblue">
+    <span class="titleText1 fc-white pd-l-m">สรุปเอกสารเดือน : </span>
+    <span class="titleText2 fc-yellow fw-b"><= title ></span>
+    <span class="titleText2 fc-lime fw-b">( จำนวนเอกสาร = <= data.length >)</span>
+    <span class="close-window" onclick="closeWindow(this)">✖</span>
+    <span class="expand-window" onclick="copyTable(this)">copy</span>
+    <span class="clickable expand-window" 
+          data-direction="up"
+          onclick="moveWindow(this)">&#8679;</span>
+    <span class="clickable expand-window" 
+          data-direction="down"
+          onclick="moveWindow(this)">&#8681;</span>
+  </p>
+</div> 
+-->
+
+<div class="table-ctn" name="tableCtn">
+  <table>
+
+    <thead>
+      <tr class="<%= titleClassColor %> al-l">
+        <th class="<%= titleClassColor %>">
+          <p>
+            <span class="clickable close-window" onclick="closeWindow(this)">✖</span>
+            <span class="expand-window" onclick="copyTable(this)">copy</span>
+            <span class="clickable expand-window" 
+                  data-direction="up"
+                  onclick="moveWindow(this)">&#8679;</span>
+            <span class="clickable expand-window" 
+                  data-direction="down"
+                  onclick="moveWindow(this)">&#8681;</span>              
+          </p>
+        </th>
+        <th class="ov-hide" colspan="10">
+          <p>
+            <!-- <span class="fc-white pd-l-m"><= titleConclude > : </span> -->
+            <span class="fc-yellow"><%= title %></span>
+            <span class="fc-lime">[<%= data.length %>]</span>
+          </p>
+        </th>
+      </tr>
+
+      <!--  -->
+      <tr class="lh-xxl">
+        <th class="bg-eee">ไอดี</th>
+        <th class="bg-eee">ชื่อ</th>
+        <th class="bg-eee">แพคเกจ</th>
+        <th class="bg-eee">จำนวน</th>
+      </tr>
+    </thead>
+
+    <!--  -->
+    <% 
+      let sum_1_totalAmount = 0 
+    %>
+    <tbody>      
+      <% data.forEach( (doc,index) => { %>
+      <%
+       sum_1_totalAmount += (doc.quantity ?? 0)
+      %>
+      <tr class="al-r" >
+        <td class="al-l fc-green" style="background-color: white">
+          <span class=""><%= doc.itemId %></span>
+        </td>
+        <td class="al-l fc-blue"><%= doc.itemName %></td>
+        <td class="al-c"><%= doc.itemPackageType %></td>
+        <td class="al-r fc-blue"><%= doc.quantity %></td>
+      </tr>
+      <% }) %>
+      <!-- 1 -->
+      <tr>
+        <th class="bg-eee"></th>
+        <th class="bg-eee"></th>
+        <th class="bg-eee al-r mg-r-s">รวม</th>
+        <th class="bg-eee al-r fc-blue"><%= sum_1_totalAmount > 0 ? sum_1_totalAmount : '-' %></th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- </section> -->
