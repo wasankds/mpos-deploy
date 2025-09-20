@@ -14,6 +14,7 @@ const __dirname = path.dirname(__filename);
 // โฟลเดอร์ที่ต้องการสร้าง;
 const folderNamesToCreate = [
   'items', 
+  'return' ,
   'warehouse-in',
   'warehouse-out', 
   'sales' ,

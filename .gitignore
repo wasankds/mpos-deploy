@@ -9,6 +9,7 @@ warehouse-in
 warehouse-out
 sales
 backup
+return
 
 # Logs
 logs
