@@ -48,7 +48,16 @@
       <form id="nav_reportForm" method="get">
         <select id="nav_reportType" class="" title="รายงาน">
           <option value="">-</option>
-          <% NAV_REPORT.forEach( (obj) => { %>
+          <!--  -->
+          <% NAV_REPORT_DOCS.forEach( (obj) => { %>
+            <% if (!user.isAuth || !obj.userAuthorities.includes(user.userAuthority)) return; %>
+            <option value="<%= obj.path %>" <%= title == obj.title ? 'selected' : '' %>>
+              <%= obj.title %>
+            </option>
+          <% }) %>          
+
+          <!--  -->
+          <% NAV_REPORT_ITEMS.forEach( (obj) => { %>
             <% if (!user.isAuth || !obj.userAuthorities.includes(user.userAuthority)) return; %>
             <option value="<%= obj.path %>" <%= title == obj.title ? 'selected' : '' %>>
               <%= obj.title %>
@@ -59,12 +68,15 @@
 
       <!--  -->
       <div class="mg-l-l">
-        <% NAV_ITEMS.forEach( (obj) => { %>
+        <% NAV_ITEMS.forEach( (obj, index) => { %>
           <% if (!user.isAuth || !obj.userAuthorities.includes(user.userAuthority)) return; %>
+          <%   
+            let marginRight = index === NAV_ITEMS.length-1 ? '' : 'mg-r-m';
+          %>
           <a class="nav-link <%= title == obj.title ? 'active' : '' %>" 
              href="<%= obj.path %>" 
              title="<%= obj.title %>">
-            <i class="fas <%= obj.icon %> mg-r-m"></i>
+            <i class="fas <%= obj.icon %> <%= marginRight %>"></i>
           </a>
           <% if (obj.separator) { %>
             <span class="nav-link fc-liblue">|</span>

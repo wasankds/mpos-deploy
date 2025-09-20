@@ -26,7 +26,6 @@ async function loadSettingSystemStart() {
 global.SETTINGS_SYSTEM = await loadSettingSystemStart()
 const PORT = SETTINGS_SYSTEM.DEPLOY == 0 ? SETTINGS_SYSTEM.PORT_DEV : SETTINGS_SYSTEM.PORT_SERVER
 global.DOMAIN_ALLOW = SETTINGS_SYSTEM.DEPLOY == 0 ? `${SETTINGS_SYSTEM.LOCALHOST_ALLOW}:${PORT}` : `${SETTINGS_SYSTEM.DOMAIN_ALLOW}`
-//=== Sessionss
 const MongoStore = MongoDBSession(session)
 app.use(session({
   secret: 'mpos.node.apps.key.sign.cookie',
@@ -34,17 +33,16 @@ app.use(session({
     maxAge: 1000*60*60*24*30, // 30 days
     // Prevent client-side JavaScript from accessing the cookie
     // secure: process.env.DEPLOY == 'dev' ? false : true, // ตัวนี้ทำให้มีปัญหาให้ปิดไป
-    httpOnly: IS_PRODUCTION ? true : false,
+    httpOnly: IS_PRODUCTION ? true : false ,
   },
-  resave: false,
-  saveUninitialized: false,
+  resave: false ,
+  saveUninitialized: false ,
   store: new MongoStore({
-    uri: global.dbUrl,
-    databaseName: global.dbName,
-    collection: global.dbColl_sessions,
-  }),
+    uri: global.dbUrl ,
+    databaseName: global.dbName ,
+    collection: global.dbColl_sessions ,
+  }) ,
 }))
-//=== สำหรับการตั้งค่า Express
 app.set('view engine', 'ejs')
 app.use(flash())
 app.use(cookieParser())

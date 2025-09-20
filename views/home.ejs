@@ -30,13 +30,20 @@
   <%- include('partials/nav.ejs') %>
   <%- include('partials/notify.ejs', {msg:msg}) %> 
 
+  <header>
+    <p class="al-c fc-white">
+      <!-- <i class="fas fa-house mg-r-l"></i>  -->
+      <span><%= dataSettings && dataSettings.COMPANY_NAME ? dataSettings.COMPANY_NAME : 'หน้าแรก' %></span>
+    </p>
+  </header>
+
   <main>
 
     <!--  -->
     <section class="mg-b-l">
       <h3 class="al-c fs-xl">
-        <i class="fa-solid fa-house mg-r-l"></i> 
-        <span><%= dataSettings && dataSettings.COMPANY_NAME ? dataSettings.COMPANY_NAME : 'หน้าแรก' %></span>
+        <i class="fas fa-shopping-cart mg-r-l"></i> 
+        <span>ขาย/คืน</span>
       </h3>
     </section>
     
@@ -51,17 +58,15 @@
       <% }) %>
     </section>
 
-
     <!--  -->
     <% if(['O','S','A'].includes(user.userAuthority) && user.isAuth) { %>
+    <!-- คลังสินค้า -->
     <section class="mg-t-l mg-b-l">
       <h3 class="al-c fs-xl">
-        <i class="fa-solid fa-warehouse mg-r-l"></i> 
+        <i class="fas fa-warehouse mg-r-l"></i> 
         <span>คลังสินค้า</span>
       </h3>
     </section>
-
-    <!--  -->    
     <section class="flex-row">
       <% global.NAV_WAREHOUSE.forEach(item => { %>
         <div class="col-1 w-100 <%= item.menuColor %>"">
@@ -70,8 +75,19 @@
           </a>
         </div>
       <% }) %>
+    </section>
+    <% } %>
+    
+    <!-- ไอเท็ม -->    
+    <% if(['O','S'].includes(user.userAuthority) && user.isAuth) { %>
+    <section class="mg-t-l mg-b-l">
+      <h3 class="al-c fs-xl">
+        <i class="fas fa-box-open mg-r-l"></i> 
+        <span>ไอเท็ม</span>
+      </h3>
+    </section>
 
-      <% if(['O','S'].includes(user.userAuthority) && user.isAuth) { %>
+    <section class="flex-row">
       <% global.NAV_ITEMS.forEach(item => { %>
         <div class="col-1 w-100 <%= item.menuColor %>"">
           <a href="<%= item.path %>">
@@ -79,35 +95,52 @@
           </a>
         </div>
       <% }) %>
-      <% } %>
     </section>
     <% } %>
-    
+
     <!--  -->
     <section class="mg-t-l mg-b-l">
       <h3 class="al-c fs-xl">
-        <i class="fa-solid fa-chart-line mg-r-l"></i> 
-        <span>รายงาน</span>
+        <i class="fas fa-file-contract mg-r-l"></i> 
+        <span>รายงานเอกสาร</span>
       </h3>
     </section>
 
     <!--  -->
     <section class="flex-row">
-      <% global.NAV_REPORT.forEach(item => { %>
+      <% global.NAV_REPORT_DOCS.forEach(item => { %>
         <div class="col-1 w-100 <%= item.menuColor %>"">
           <a href="<%= item.path %>">
             <i class="<%= item.icon %> mg-r-xl"></i><%= item.title %>
           </a>
         </div>
       <% }) %>
+    </section>    
+
+    <!--  -->
+    <section class="mg-t-l mg-b-l">
+      <h3 class="al-c fs-xl">
+        <i class="fas fa-box-open mg-r-l"></i> 
+        <span>รายงานไอเท็ม</span>
+      </h3>
     </section>
-    
+
+    <!--  -->
+    <section class="flex-row">
+      <% global.NAV_REPORT_ITEMS.forEach(item => { %>
+        <div class="col-1 w-100 <%= item.menuColor %>"">
+          <a href="<%= item.path %>">
+            <i class="<%= item.icon %> mg-r-xl"></i><%= item.title %>
+          </a>
+        </div>
+      <% }) %>
+    </section>    
 
     <!--  -->
     <% if(['O','S'].includes(user.userAuthority) && user.isAuth) { %>
     <section class="mg-t-l mg-b-l">
       <h3 class="al-c fs-xl">
-        <i class="fa-solid fa-users mg-r-l  fs-xl"></i> 
+        <i class="fas fa-users mg-r-l  fs-xl"></i> 
         <span>ผู้ใช้งานระบบ</span>
       </h3>
     </section>
@@ -129,7 +162,7 @@
     <% if(['O','S'].includes(user.userAuthority) && user.isAuth) { %>
     <section class="mg-t-l mg-b-l">
       <h3 class="al-c">
-        <i class="fa-solid fa-cog mg-r-l fs-xl"></i> 
+        <i class="fas fa-cog mg-r-l fs-xl"></i> 
         <span>ตั้งค่า</span>
       </h3>
     </section>

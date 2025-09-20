@@ -20,7 +20,7 @@ const folderNames = [
   // โฟลเดอร์ public แยกย่อยด้วย 
   'public/cdn', 'public/css-min', 'public/fonts', 'public/images', 'public/js-min', 'public/static', 
   // โฟลเดอร์สำหรับเก็บข้อมูลเอนทิตี้ 
-  'items', 'warehouse-in', 'warehouse-out' ,'sales',
+  'items', 'warehouse-in', 'warehouse-out' ,'sales', 'return'
 ];
 
 //=== ไฟล์ที่จะก๊อปปี้ ใช้กับทั้งต้นทาง และ ปลายทาง - .gitignore ไฟล์นี้ไม่ต้องก๊อปปี้
