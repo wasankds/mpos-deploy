@@ -403,7 +403,7 @@
             <i class="fa  fa-solid fa-print mg-r-s"></i>พิมพ์
           </button>
 
-          <% if(settings.DOWNLOAD_DOC_AS_IMAGE == 'on'){ %>
+          <% if(settings && settings.DOWNLOAD_DOC_AS_IMAGE == 'on'){ %>
           <button class="btn btn-sm btn-sm bg-download" id="btnDownloadImage" title="ดาวน์โหลดภาพ">
             <i class="fa fa fa-download mg-r-s"></i>ภาพ
           </button> 

@@ -53,21 +53,21 @@
 
     <!--  -->
     <form class="dp-n"
-          id="uploadPriceForm" 
-          action="<%= PATH_UPLOAD_ITEMS %>" 
+          id="excelForm" 
+          action="<%= PATH_UPLOAD_EXCEL %>" 
           method="post" enctype="multipart/form-data">
 
         <div class="flex-row fc-red fs-sn mg-b-m">
-          ห้ามอัปโหลดขณะใช้เปิดทำการ และต้องลบเซสชั่นทั้งหมด
+          ห้ามอัปโหลดขณะเปิดทำการ และต้องลบเซสชั่นทั้งหมด
         </div>
 
         <div class="flex-row">
           <button class="btn btn-sm bg-download" 
-                  id="btnDownloadItems" title="ดาวน์โหลดไอเท็มเป็น Excel">
+                  id="btnDownloadExcel" title="ดาวน์โหลดเป็น Excel">
             <i class="fas fa-download"></i>
           </button>
   
-          <label class="pd-l-l pd-r-m al-r" title="อัปโหลดไอเท็มจากไฟล์ Excel .xlsx">
+          <label class="pd-l-l pd-r-m al-r" title="อัปโหลดจากไฟล์ Excel .xlsx">
             <i class="fas fa-file-excel"></i>
             <span>อัปโหลด</span>
           </label>
@@ -75,10 +75,10 @@
                  title="ไฟล์ Excel .xlsx ไม่เกิน 50MB"
                  accept=".xlsx"
                  style="max-width: 400px;"
-                 name="uploadItemsFile"
-                 id="uploadItemsFile">
+                 name="uploadExcelFile"
+                 id="uploadExcelFile">
           <button class="btn btn-sm bg-upload" 
-                  type="submit" title="อัปโหลดไอเท็มจากไฟล์ Excel">
+                  type="submit" title="อัปโหลดจากไฟล์ Excel">
               <i class="fas fa-upload"></i>
           </button>
         </div>
@@ -819,8 +819,8 @@
     var PATH_MAIN = `<%= PATH_MAIN %>` ;
     var PATH_FETCH = `<%= PATH_FETCH %>` ;
     var PATH_PRINT = `<%= PATH_PRINT %>` ;
-    var PATH_DOWNLOAD_ITEMS = `<%= PATH_DOWNLOAD_ITEMS %>` ;
-    var PATH_UPLOAD_ITEMS = `<%= PATH_UPLOAD_ITEMS %>` ;
+    var PATH_DOWNLOAD_EXCEL = `<%= PATH_DOWNLOAD_EXCEL %>` ;
+    var PATH_UPLOAD_EXCEL = `<%= PATH_UPLOAD_EXCEL %>` ;
     var PREFIX = `<%= PREFIX %>` ;
     var userAuthority = `<%= user.userAuthority %>` ;
     var DATA_USER_BRANCHES = JSON.parse(`<%- dataUserBranchesJson %>`) ;

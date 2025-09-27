@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="/css/flexNew.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/pagination5btns3.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/tableFix1col.css?v=<%= time %>"> 
+  <link rel="stylesheet" href="/css/footer.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/suppliers.css?v=<%= time %>">
@@ -60,6 +61,37 @@
     <!-- LEFT -->
     <section class="main-left">
 
+      <!--  -->
+      <form class="dp-n"
+            id="excelForm" autocomplete="off"
+            action="<%= PATH_UPLOAD_EXCEL %>" 
+            method="post" enctype="multipart/form-data">
+
+          <div class="flex-row fc-red fs-sn mg-b-m">ห้ามอัปโหลดขณะเปิดทำการ</div>
+
+          <div class="flex-row">
+            <button class="btn btn-sm bg-download" 
+                    id="btnDownloadExcel" title="ดาวน์โหลดเป็น Excel">
+              <i class="fas fa-download"></i>
+            </button>
+    
+            <label class="pd-l-l pd-r-m al-r" title="อัปโหลดจากไฟล์ Excel .xlsx">
+              <i class="fas fa-file-excel"></i>
+              <span>อัปโหลด</span>
+            </label>
+            <input class="al-l pd-l-m w-100" type="file" 
+                  title="ไฟล์ Excel .xlsx ไม่เกิน 50MB"
+                  accept=".xlsx"
+                  style="max-width: 400px;"
+                  name="uploadExcelFile"
+                  id="uploadExcelFile">
+            <button class="btn btn-sm bg-upload" 
+                    type="submit" title="อัปโหลดจากไฟล์ Excel">
+                <i class="fas fa-upload"></i>
+            </button>
+          </div>
+      </form>
+
       <form id="mainForm" class="" autocomplete="off" 
             onsubmit="createSpinner()"
             action="<%= PATH_SAVE %>" method="post">
@@ -74,18 +106,25 @@
 
         <!-- #1 : Toolbar-->
         <div class="toolbar-ctn d-flex justify-content-between">
-          <button type="button" class="btn  btn-sm  bg-new pd-r-l pd-l-l" 
+          <button class="btn  btn-sm  bg-new pd-r-l pd-l-l" 
                   onclick="event.preventDefault();newJs(event)">
-            <i class="fas fa-plus-circle pd-r-m"></i>สร้างใหม่
+            <i class="fas fa-plus-circle"></i>
+            <!-- สร้างใหม่ -->
           </button>
 
-          <button type="button" class="btn btn-sm bg-print pd-r-l pd-l-l"
+          <button class="btn btn-sm bg-print pd-r-l pd-l-l"
                   onclick="event.preventDefault();printJs(event)">
-            <i class="fas fa-print pd-r-m"></i>พิมพ์
+            <i class="fas fa-print"></i>
+            <!-- พิมพ์ -->
+          </button>
+
+          <button class="btn btn-sm bg-upload pd-r-l pd-l-l" id="btnUploadTool" title="แสดงแถบเครื่องมืออัปโหลดไอเท็ม">
+            <i class="fas fa-file-excel"></i>
           </button>
 
           <button type="submit" class="btn  btn-sm  bg-save pd-r-l pd-l-l">
-            <i class="fas fa-save pd-r-m"></i>บันทึก
+            <i class="fas fa-save"></i>
+            <!-- บันทึก -->
           </button>
         </div>
 
@@ -465,6 +504,8 @@
   <script type="text/javascript">
     var PATH_MAIN = `<%= PATH_MAIN %>` ;     
     var PATH_PRINT = `<%= PATH_PRINT %>` ;
+    var PATH_DOWNLOAD_EXCEL = `<%= PATH_DOWNLOAD_EXCEL %>` ;
+    var PATH_UPLOAD_EXCEL = `<%= PATH_UPLOAD_EXCEL %>` ;
     var PREFIX = '<%= PREFIX %>' ; 
   </script>
   <% if(!IS_PRODUCTION) { %>

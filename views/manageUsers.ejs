@@ -62,6 +62,39 @@
     <!-- LEFT -->
     <section class="main-left">
 
+      <!--  -->
+      <form class="dp-n"
+          id="excelForm" autocomplete="off"
+          action="<%= PATH_UPLOAD_EXCEL %>" 
+          method="post" enctype="multipart/form-data">
+
+        <!-- <div class="flex-row fc-red fs-sn mg-b-m">ห้ามอัปโหลดขณะเปิดทำการ</div> -->
+
+        <div class="flex-row">
+          <button class="btn btn-sm bg-download" 
+                  id="btnDownloadExcel" title="ดาวน์โหลดเป็น Excel">
+            <i class="fas fa-download mg-r-m"></i>ดาวน์โหลด Excel
+          </button>
+  
+          <!-- ปิดใช้งานดีกว่า
+          <label class="pd-l-l pd-r-m al-r" title="อัปโหลดจากไฟล์ Excel .xlsx">
+            <i class="fas fa-file-excel"></i>
+            <span>อัปโหลด</span>
+          </label>
+          <input class="al-l pd-l-m w-100" type="file" 
+                title="ไฟล์ Excel .xlsx ไม่เกิน 50MB"
+                accept=".xlsx"
+                style="max-width: 400px;"
+                name="uploadExcelFile"
+                id="uploadExcelFile">
+          <button class="btn btn-sm bg-upload" 
+                  type="submit" title="อัปโหลดจากไฟล์ Excel">
+              <i class="fas fa-upload"></i>
+          </button> 
+          -->
+        </div>
+      </form>
+
       <form id="mainForm" class="" autocomplete="off" 
             onsubmit="createSpinner()"
             action="<%= PATH_SAVE %>" method="post">
@@ -75,18 +108,24 @@
         <div class="toolbar-ctn">
 
           <!-- สร้างใหม่ ให้ล้างฟอร์มไปเลย -->
-          <button type="button" class="btn btn-sm bg-new" id="btnCreateNew">
-            <i class="fas fa-plus-circle pd-r-m"></i>สร้างใหม่
+          <button class="btn btn-sm bg-new" id="btnCreateNew" title="สร้างใหม่">
+            <i class="fas fa-plus-circle"></i>
+            <!-- สร้างใหม่ -->
           </button>
 
-          <button type="button" class="btn btn-sm bg-print"
+          <button class="btn btn-sm bg-print" title="พิมพ์"
                   onclick="event.preventDefault();printUsersJs(event)">
-            <i class="fas fa-print pd-r-m"></i>พิมพ์
+            <i class="fas fa-print"></i>
+            <!-- พิมพ์ -->
           </button>
 
+          <button class="btn btn-sm bg-upload pd-r-l pd-l-l" id="btnUploadTool" title="แสดงแถบเครื่องมืออัปโหลดไอเท็ม">
+            <i class="fas fa-file-excel"></i>
+          </button>
 
-          <button type="submit" class="btn btn-sm bg-save">
-            <i class="fas fa-save pd-r-m"></i>บันทึก
+          <button type="submit" class="btn btn-sm bg-save" title="บันทึก">
+            <i class="fas fa-save"></i>
+            <!-- บันทึก -->
           </button>
         </div>
 
@@ -493,6 +532,8 @@
     var PATH_MAIN = `<%= PATH_MAIN %>` ;     
     var PREFIX = '<%= PREFIX %>' ; 
     var PATH_PRINT = `<%= PATH_PRINT %>` ;     
+    var PATH_DOWNLOAD_EXCEL = `<%= PATH_DOWNLOAD_EXCEL %>` ;
+    var PATH_UPLOAD_EXCEL = `<%= PATH_UPLOAD_EXCEL %>` ;
     var userAuthority = '<%= user.userAuthority %>' ;
     var USER_AUTHORITIES = JSON.parse(`<%- JSON.stringify(global.USER_AUTHORITIES) %>`) ;
   </script>

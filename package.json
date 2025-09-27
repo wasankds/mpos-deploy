@@ -6,15 +6,15 @@
   "main": "mpos.js",
   "scripts": {
     "use_nvm": "nvm use 22.16.0",
-    "min-command": "node commandSystem/min_commandSystem.js",
     "min-1": "node commandSystem/min_css_js.js",
     "min-2": "node commandSystem/delete_min_js.js",
     "min-3": "node commandSystem/min_routes.js",
     "min-4": "node commandSystem/min_mymodule.js",
+    "min-c": "node commandSystem/min_commandSystem.js",
     "create-f": "node commandSystem-min/create_folders.js",
     "create-i": "node commandSystem-min/create_dbCollectionIndex.js",
-    "clear-db-data": "node commandSystem-min/clear_db_data.js",
     "clear-db-docs": "node commandSystem-min/clear_db_docs.js",
+    "clear-db-data": "node commandSystem-min/clear_db_data.js",
     "clear-db-entire": "node commandSystem-min/clear_db_entire.js",
     "dev": "nodemon mpos.js",
     "app": "node mpos.js",
@@ -50,6 +50,7 @@
     "readline": "^1.3.0",
     "request": "^2.88.2",
     "sharp": "^0.34.3",
+    "validator": "^13.15.15",
     "xlsx": "^0.18.5"
   }
 }

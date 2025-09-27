@@ -21,7 +21,7 @@
   <div class="mg-t-xl">
     <label class="mg-b-m">
       <span>อัปเดทระบบ</span>
-      <span class="fc-cornblue">[ เวอร์ชั่นปัจจุบัน <%= SYS_VERSION %> ]</span>
+      <span class="fc-cornblue fw-b">[ เวอร์ชั่นปัจจุบัน <%= SYS_VERSION %> ]</span>
     </label>
     <form id="updateForm" class="al-c"
           onsubmit="createSpinner()"
@@ -48,7 +48,7 @@
           action="<%= PATH_RESTART_PM2 %>" method="post">
       <section class="d-flex">
         <button type="button" class="btn btn-sm bg-dkorange" id="btnRestartPm2">
-          <i class="fas fa-redo"></i> Restart (PM2)
+          <i class="fas fa-redo"></i> Restart
         </button>
         <button type="submit" class="btn btn-sm bg-green dp-n" id="btnConfirmRestartPm2">
           <i class="fas fa-check-circle"></i> ยืนยัน
