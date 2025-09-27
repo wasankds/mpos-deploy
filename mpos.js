@@ -1,3 +1,4 @@
+// await import(`./${mymoduleFolder}/myDbStart.js`)  // แยกไปทำตอนเปิดระบบครั้งแรก
 import 'dotenv/config' ; 
 import express from 'express' ; 
 import session from 'express-session' ; 
@@ -11,8 +12,7 @@ global.dbName = process.env.DB_NAME
 global.dbUrl = process.env.DB_URL
 global.mymoduleFolder = global.IS_PRODUCTION ? 'mymodule-min' : 'mymodule'
 const routesFolder = global.IS_PRODUCTION ? 'routes-min' : 'routes'
-await import(`./${mymoduleFolder}/myGlobal.js`) // กำหนด global ตัวแปรต่างๆ
-await import(`./${mymoduleFolder}/myDbStart.js`) // สร้าง index ให้กับ collection ต่างๆ
+await import(`./${mymoduleFolder}/myGlobal.js`)   // กำหนด global ตัวแปรต่างๆ
 await import(`./${mymoduleFolder}/mySchedule.js`) // รันปิดเอกสารตอนตี2ทุกวัน 
 const app = express()
 async function loadSettingSystemStart() {
@@ -78,6 +78,7 @@ app.use((await import(`./${routesFolder}/userInfoRouter.js`)).default);
 app.use((await import(`./${routesFolder}/passwordRouter.js`)).default);
 app.use((await import(`./${routesFolder}/itemsRouter.js`)).default);
 app.use((await import(`./${routesFolder}/itemsCategoryRouter.js`)).default);
+app.use((await import(`./${routesFolder}/suppliersRouter.js`)).default);
 app.use((await import(`./${routesFolder}/docGeneralRouter.js`)).default)
 app.use((await import(`./${routesFolder}/docMainRouter.js`)).default);
 app.use((await import(`./${routesFolder}/reportDocsRouter.js`)).default);

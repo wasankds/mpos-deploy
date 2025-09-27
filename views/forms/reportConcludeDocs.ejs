@@ -50,76 +50,209 @@
         <th class="bg-eee">เลขที่เอกสาร</th>
         <th class="bg-eee">สถานะ</th>
         <th class="bg-eee">วันที่และเวลา</th>
-        <th class="bg-eee">รวม</th>
+        <% if( ['warehouseIn', 'sales', 'return'].includes(docType) ){ %>
+        <th class="bg-eee">
+          <span>รวม</span>
+          <% if( ['sales', 'return'].includes(docType) ){ %>
+          <span>[ชำระ1/2]</span>
+          <% } %>
+        </th>
+        <% } %>
         <th class="bg-eee">สาขา</th>
         <th class="bg-eee">ยูสเซอร์</th>
+        <% if( docType == 'warehouseIn' ){ %>
+        <th class="bg-eee">ผู้จัดจำหน่าย</th>
+        <% } %>
       </tr>
     </thead>
 
     <!--  -->
-    <% 
-      let sum_1_totalAmount = 0 
-      let sum_2_totalAmount = 0 
-      let sum_10_totalAmount = 0 
+    <%
+
+      // รวม ผลรวม totalAmount ตามสถานะเอกสาร
+      if( ['warehouseIn', 'sales', 'return'].includes(docType) ){
+        var sum_1_totalAmount = 0 
+        var sum_2_totalAmount = 0 
+        var sum_10_totalAmount = 0 
+      }
+
+      // รวมวิธีชำระเงินแบบต่างๆ
+      if( ['sales', 'return'].includes(docType) ){
+        var sum_1_payments =  [ ...JSON.parse(JSON.stringify(global.PAY_TYPE)) ] // deep copy
+        sum_1_payments.forEach( o => o.amount = 0 ) // reset amount
+
+        var sum_2_payments = [ ...JSON.parse(JSON.stringify(global.PAY_TYPE)) ] // deep copy
+        sum_2_payments.forEach( o => o.amount = 0 ) // reset amount
+
+        var sum_10_payments = [ ...JSON.parse(JSON.stringify(global.PAY_TYPE)) ] // deep copy
+        sum_10_payments.forEach( o => o.amount = 0 ) // reset amount
+      }
+
+      // รวมชำระหนี้
+      if( ['sales'].includes(docType) ){
+        var sum_1_payDebtTotal = 0 
+        var sum_2_payDebtTotal = 0 
+        var sum_10_payDebtTotal = 0 
+      }
     %>
+    <p>
+      
+    </p>
     <tbody>
       <% data.forEach( (doc,index) => { %>
       <% 
-        if(doc.docStatusNumber == 1) {
-          sum_1_totalAmount += (doc.totalAmount ?? 0)
-        }else if(doc.docStatusNumber == 2) {
-          sum_2_totalAmount += (doc.totalAmount ?? 0)
-        }else if(doc.docStatusNumber == 10) {
-          sum_10_totalAmount += (doc.totalAmount ?? 0)
+
+        // หาผลรวมตามสถานะเอกสาร - มีเฉพาะประเภท warehouseIn/sales
+        if( ['warehouseIn', 'sales', 'return'].includes(docType) ){
+          if(doc.docStatusNumber == 1) {
+            sum_1_totalAmount += (doc.totalAmount ?? 0)
+
+            // รวมวิธีชำระเงินแบบต่างๆ   
+            if( ['sales', 'return'].includes(docType) ){
+              sum_1_payments.forEach( o => {
+                if( o.paytype == doc.paymentMethod1 ) o.amount += (doc.paymentAmount1 ?? 0)
+                if( o.paytype == doc.paymentMethod2 ) o.amount += (doc.paymentAmount2 ?? 0)
+              })
+            }
+
+
+            if( ['sales'].includes(docType) ) sum_1_payDebtTotal += (doc.payDebtTotal ?? 0)
+          }else if(doc.docStatusNumber == 2) {
+            sum_2_totalAmount += (doc.totalAmount ?? 0)
+
+            // รวมวิธีชำระเงินแบบต่างๆ
+            if( ['sales', 'return'].includes(docType) ){
+              sum_2_payments.forEach( o => {
+                if( o.paytype == doc.paymentMethod1 ) o.amount += (doc.paymentAmount1 ?? 0)
+                if( o.paytype == doc.paymentMethod2 ) o.amount += (doc.paymentAmount2 ?? 0)
+              })
+            }
+
+            if( ['sales'].includes(docType) ) sum_2_payDebtTotal += (doc.payDebtTotal ?? 0)
+          }else if(doc.docStatusNumber == 10) {
+            sum_10_totalAmount += (doc.totalAmount ?? 0)
+
+            if( ['sales', 'return'].includes(docType) ){
+              sum_10_payments.forEach( o => {
+                if( o.paytype == doc.paymentMethod1 ) o.amount += (doc.paymentAmount1 ?? 0)
+                if( o.paytype == doc.paymentMethod2 ) o.amount += (doc.paymentAmount2 ?? 0)
+              })
+            }
+
+            if( ['sales'].includes(docType) ) sum_10_payDebtTotal += (doc.payDebtTotal ?? 0)
+          }
         }
       %>
       <tr class="al-r" >
+
+        <!-- เลขที่เอกสาร -->
         <td class="al-c" style="background-color: white">
           <span class="<%= doc.docStatusColor %> clickable"
                 onclick="reportByDocId('<%= doc.docId %>')"><%= doc.docId %></span>
         </td>
 
+        <!-- สถานะ -->
         <td class="al-l <%= doc.docStatusColor %>">[<%= doc.docStatusNumber %>] <%= doc.docStatus %></td>
-        <td class="al-c fc-blue" title="<%= doc.docDateTime %>"><%= doc.docDateTime %></td>
-        <td class="al-r fc-blue pd-r-s"><%= doc.totalAmount ?? '-' %></td>
 
-        <!--  -->
+        <!-- วันที่ -->
+        <td class="al-c fc-dkcyan" title="<%= doc.docDateTime %>"><%= doc.docDateTime %></td>
+
+        <!-- รวม -->
+        <% if( ['warehouseIn', 'sales', 'return'].includes(docType) ){ %>
+        <td class="al-r pd-r-s">
+          <span class="fc-blue"><%= doc.totalAmount ?? '-' %></span>
+
+          <!-- ชำระ1/2 มีเฉพาะใน sales/return -->
+          <% if( ['sales', 'return'].includes(docType) ){ %>
+          <%
+            const colorPay1 = global.PAY_TYPE.find( o => o.paytype == doc.paymentMethod1 )?.color || 'fc-black'
+            const colorPay2 = global.PAY_TYPE.find( o => o.paytype == doc.paymentMethod2 )?.color || 'fc-black'
+            const colorPayDebt = doc.isDebtPaidOff == null ? colorPay2 
+                                : doc.isDebtPaidOff == true ? 'fc-mgt fw-b'           // ชำระครบแล้ว
+                                : doc.isDebtPaidOff == false ? 'fc-orange fw-b' : ''  // ชำระบางส่วน
+          %>
+          <span>[</span>
+          <span class="<%= colorPay1 %>" title="<%= doc.paymentMethod1Name %>">
+            <%= doc.paymentAmount1 == 0 ? '-' : doc.paymentAmount1 %>
+          </span>
+          <span>/</span>
+          <%
+            let titlePay2_1 = doc.paymentMethod2Name
+            let titlePay2_2 = doc.isDebtPaidOff == null ? '' 
+                              : doc.isDebtPaidOff == true ? `\nชำระหนี้แล้ว ${doc.payDebtTotal}` 
+                              : doc.isDebtPaidOff == false ? `\nชำระบางส่วน ${doc.payDebtTotal}` : ''
+          %>
+          <span class="<%= colorPayDebt %>" title="<%= titlePay2_1 + titlePay2_2 %>">
+            <%= doc.paymentAmount2 == 0 ? '-' : doc.paymentAmount2 %>
+          </span>
+          <span>]</span>
+          <% } %>
+        </td>
+        <% } %>
+
+        <!-- สาขา -->
         <td class="al-l">
           <span class="fc-steelblue">[<%= doc.branchId %>]</span>
-          <span class="fc-slateblue"><%= doc.branchName.length > 20 ? doc.branchName.slice(0, 20) + '...' : doc.branchName %></span>
+          <span class="fc-slateblue"><%= doc.branchName.length > 18 ? doc.branchName.slice(0, 18) + '...' : doc.branchName %></span>
         </td>
 
-        <!--  -->
-        <td class="al-l">
+        <!-- ยูสเซอร์ -->
+        <td class="al-l" title="[<%= doc.userId %>] <%= doc.userFullname %>">
           <span class="fc-plum">[<%= doc.userId %>]</span>
-          <span class="fc-mgt"><%= doc.userFullname.length > 20 ? doc.userFullname.slice(0, 20) + '...' : doc.userFullname %></span>
+          <span class="fc-mgt"><%= doc.userFullname.length > 18 ? doc.userFullname.slice(0, 18) + '...' : doc.userFullname %></span>
         </td>
+
+        <!-- ผู้จัดจำหน่าย(มีเฉพาะ warehouseIn) -->
+        <% if( docType == 'warehouseIn' ){ %>
+        <%
+          const supplierId_Show = doc.supplierId ? `[${doc.supplierId}]` : '-'
+          const supplierName_Show = doc.supplierName ? (doc.supplierName.length > 18 ? doc.supplierName.slice(0, 18) + '...' : doc.supplierName) : '-'          
+        %>
+        <td class="al-l" title="[<%= doc.supplierId %>] <%= doc.supplierName %>">
+          <span class="fc-tan"><%= supplierId_Show %></span>
+          <span class="fc-brown"><%= supplierName_Show %></span>
+        </td>
+        <% } %>
+
       </tr>
       <% }) %>
-      <!-- 1 -->
+
+      <% 
+        // warehouseIn มีคอลัมน์ 'ผู้จัดจำหน่าย' เพิ่มเข้ามาจึง colspan = 3 เพิ่ม 
+        const colspan = docType == 'warehouseIn' ? 3 : 2
+      %>
+
+      <%
+
+        // แถวผลรวม 3 แถว (สถานะ 1,2,10)
+        totalRowArr = [
+          { label:'รวม [1]' , totalAmount:sum_1_totalAmount , payDebtTotal:sum_1_payDebtTotal ,  sumPayments : sum_1_payments },
+          { label:'รวม [2]' , totalAmount:sum_2_totalAmount , payDebtTotal:sum_2_payDebtTotal ,  sumPayments : sum_2_payments },
+          { label:'รวม [10]', totalAmount:sum_10_totalAmount, payDebtTotal:sum_10_payDebtTotal ,  sumPayments : sum_10_payments },
+        ]      
+      %>
+
+      <% totalRowArr.forEach( ( obj ,index) => { %>
       <tr>
         <th class="bg-eee"></th>
-        <th class="bg-eee al-r mg-r-m">รวม [1]</th>
+        <th class="bg-eee al-r mg-r-m"><%= obj.label %></th>
         <th class="bg-eee"></th>
-        <th class="bg-eee al-r fc-blue"><%= sum_1_totalAmount > 0 ? sum_1_totalAmount : '-' %></th>
-        <th class="bg-eee al-l" colspan="2"></th>
+        <th class="bg-eee al-r fc-blue"><%= obj.totalAmount > 0 ? obj.totalAmount : '-' %></th>
+        <th class="bg-eee al-l" colspan="<%= colspan %>">
+          <% if( ['sales', 'return'].includes(docType) ){ %>
+            <% obj.sumPayments.forEach( o => { %>
+              <p>
+                <%= o.payTypeThai %> : <span class="<%= o.color %>"><%= o.amount > 0 ? o.amount : '-' %></span>
+                <% if( ['sales'].includes(docType) && o.paytype == 'Debt' && o.amount > 0 ){ %>
+                  <span class="mg-l-xl">ชำระแล้ว</span>
+                  <span class="fc-green"><%= obj.payDebtTotal %></span>
+                <% } %>
+              </p>
+            <% }) %>
+          <% } %>
+        </th>
       </tr>
-      <!-- 2 -->
-      <tr>
-        <th class="bg-eee"></th>
-        <th class="bg-eee al-r mg-r-m">รวม [2]</th>
-        <th class="bg-eee"></th>
-        <th class="bg-eee al-r fc-blue"><%= sum_2_totalAmount > 0 ? sum_2_totalAmount : '-' %></th>
-        <th class="bg-eee al-l" colspan="2"></th>
-      </tr>
-      <!-- 10 -->
-      <tr>
-        <th class="bg-eee"></th>
-        <th class="bg-eee al-r mg-r-m">รวม [10]</th>
-        <th class="bg-eee"></th>
-        <th class="bg-eee al-r fc-blue"><%= sum_10_totalAmount > 0 ? sum_10_totalAmount : '-' %></th>
-        <th class="bg-eee al-l" colspan="2"></th>
-      </tr>
+      <% }) %>     
 
     </tbody>
   </table>

@@ -30,6 +30,10 @@
       overflow: hidden;
       margin: auto;
     }
+    footer{ 
+      width: 19cm;
+      margin: auto;
+    }
     table {
       border-collapse: collapse;
       width: 100%;
@@ -40,6 +44,7 @@
       font-size: 0.6rem; /* white-space: nowrap; */
       background: white;
     }
+    @media print {  .no-print { display: none; } }
   </style>
 </head>
 <body>
@@ -47,7 +52,7 @@
   <!-- MAIN CONTAINER -->
   <main class="">
 
-    <p class="al-c fs-s">ประวัติการแก้ไขเอกสาร : <%= title %></p>
+    <p class="al-c fs-s"><%= title %></p>
 
     <table>
       <colgroup>
@@ -137,7 +142,7 @@
   </main>
 
   <!--  -->
-  <footer class="al-c no-print mg-t-xl">
+  <footer class="d-flex justify-content-between al-c no-print mg-t-l">
     <button class="btn bg-black fc--white pd-l-xxl pd-r-xxl pd-t-l pd-b-l clickable" 
             type="button" onclick="window.print()">พิมพ์
     </button>

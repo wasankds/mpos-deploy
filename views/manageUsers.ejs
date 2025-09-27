@@ -39,16 +39,14 @@
     const isItem = item != null 
   %>
 
-  <main>
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <i class="fas fa-users-cog mg-r-l"></i> 
+      <span><%= title %></span>
+    </p>
+  </header>
 
-
-    <!-- Title -->
-    <section class="main-title">
-      <h1 class="al-c">
-        <i class="fas fa-users-cog mg-r-m"></i> 
-        <span><%= title %></span>
-      </h1>
-    </section>      
+  <main> 
 
     
     <!-- 
@@ -161,9 +159,9 @@
               <!--  -->
               <div class="col-sm-2 input-group">
                 <label class="pd-r-s al-l" title="Active Status">
-                  <i class="fas fa-user-check"></i> สถานะ *
+                  <i class="fas fa-user-check"></i> สถานะ
                 </label>
-                <select class="al-c" name="userIsActive" id="userIsActive" required>
+                <select class="al-c" name="userIsActive" id="userIsActive">
                   <% if( isItem ){ %>
                     <option value="">-</option>
                     <option <%= item.userIsActive == 'active' ? 'selected' : '' %> value="active">active</option>
@@ -360,6 +358,7 @@
               <col style="width: auto;">
               <col style="width: 1%;">
               <col style="width: 1%;">
+              <col style="width: 1%;">
             </colgroup>
 
             <thead id="tableHeader">
@@ -381,6 +380,9 @@
                 </th>
                 <th class="al-c pd-l-s pd-r-s" onclick="sortTableJs(this, 5)" title="Delete">
                   <i class="fas fa-trash-alt"></i>
+                </th>
+                <th class="al-c pd-l-s pd-r-s" onclick="sortTableJs(this, 6)" title="Changes">
+                  <i class="fas fa-exchange-alt"></i>
                 </th>
               </tr>
             </thead>
@@ -420,10 +422,10 @@
                     </button>
                   </form>
                 </td>
-                <td class="<%= color_userAuthority %> al-c" title="<%= obj.userId %>"><%= obj.userId??'-' %></td>
-                <td class="<%= color_userAuthority %> al-c" title="<%= obj.branchId %>"><%= obj.branchId??'-' %></td>
+                <td class="<%= color_userAuthority %> al-c pd-l-s pd-r-s" title="<%= obj.userId %>"><%= obj.userId??'-' %></td>
+                <td class="<%= color_userAuthority %> al-c pd-l-s pd-r-s" title="<%= obj.branchId %>"><%= obj.branchId??'-' %></td>
                 <td class="<%= color_userAuthority %> pd-l-m" title="<%= obj.userFullname %>"><%= obj.username??'-' %></td>
-                <td class="<%= color_userAuthority %> al-c" title="<%= obj.userAuthority %>">
+                <td class="<%= color_userAuthority %> al-c pd-l-s pd-r-s" title="<%= obj.userAuthority %>">
                   <%= obj.userAuthority??'-' %>
                 </td>
                 <td class="al-c">
@@ -452,12 +454,26 @@
                       <input type="button" value="✖" class="lh-tb pd-l-s pd-r-s btn-cancel" 
                              onclick="onBtnClicked(this,'CANCEL')"> 
                         -->
-
                     </form>
                   <% }else{ %>
                     <span>-</span>
                   <% } %>
                 </td>
+
+                <td class="al-c pd-l-s pd-r-s" title="ประวัติการเปลี่ยนแปลง">
+                  <% if(obj.changesHistoryCount > 0) { %>
+                    <form action="<%= PATH_CHANGES %>" method="post">
+                      <input type="hidden" name="userId" value="<%= obj.userId %>">
+                      <!-- btn-print-changes ใช้สำหรับ Swal -->
+                      <button type="button" class="btn-print-changes bg-change pd-l-l pd-r-l pd-t-s pd-b-s">
+                        <i class="fas fa-print"></i>
+                      </button>
+                    </form>
+                  <% }else{ %>
+                    <span>-</span>
+                  <% } %>
+                </td>
+
               </tr>
               <% }) %>
             </tbody>

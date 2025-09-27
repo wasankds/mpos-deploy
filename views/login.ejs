@@ -29,100 +29,87 @@
     const flash = userFlash && userFlash != null && userFlash.length > 0 ?  userFlash[0] : {}
   %>
 
-  <!-- Navigation -->
-  <div class="nav-ctn">    
-    <nav>
-      <div class="nav-1 lh-label"> 
-        <a class="nav-link" 
-           href="<%= PATH_FORGOT_PASSWORD %>">
-          <i class="fas fa-key mg-r-m"></i>ลืมรหัสผ่าน
-        </a>      
-      </div>
-      <div class="nav-2 lh-label">&nbsp;</div>
-      <div class="nav-3 lh-label">
-        <span class="fc-white"><%= SYS_NAME %></span>
-        <span class="fc-white"><%= SYS_NAME2 %></span>
-        <small class="fc-ligray mg-l-m"><%= SYS_VERSION %></small>
-      </div>  
-    </nav>
-  </div>
-    
-  <main>    
-    
-    <!-- Title -->
-    <section class="title">
-      <h1 class="text-white"><%= title %></h1>
-    </section>
+  <!--  -->
+  <nav class="d-flex justify-content-between align-items-center ">
+    <div> 
+      <a class="nav-link" 
+          href="<%= PATH_FORGOT_PASSWORD %>">
+        <i class="fas fa-key mg-r-m"></i>ลืมรหัสผ่าน
+      </a>      
+    </div>
+    <div>
+      <span class="fc-white"><%= SYS_NAME %></span>
+      <span class="fc-white"><%= SYS_NAME2 %></span>
+      <small class="fc-ligray mg-l-m"><%= SYS_VERSION %></small>
+    </div>  
+  </nav>
 
-    <section class="center">
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <i class="fas fa-sign-in-alt mg-r-l"></i> 
+      <!-- <span><%= title %></span> -->
+      <span><%= settings && settings.COMPANY_NAME ? settings.COMPANY_NAME : 'เข้าสู่ระบบ' %></span>
+    </p>
+  </header>
 
-      <!--  -->
-      <div class="center-left">
-  
-        <!-- Head -->
-        <!-- <h3 class="bb-d bdr3">
-          <div class="pd-l-xl lh-label">
-            <i class="fa fa-sign-in-alt pd-r-l"></i>
+  <main> 
+
+    <!-- Left -->
+    <div class="left">  
+
+      <!-- Login -->
+      <form action="<%= PATH_LOGIN %>" method="POST" autocomplete="off">
+
+        <!--  -->
+        <div class="flex-row mg-t-xl">
+          <div class="col-sm-f input-group">
+            <label class="pd-r-s">
+              <span>ชื่อผู้ใช้หรืออีเมล์</span>
+              <span class="fc-lime">*</span>
+            </label>
+            <input class="pd-l-m" type="text" name="userNameEmail" 
+                    placeholder="ชื่อผู้ใช้หรืออีเมล์" required>
           </div>
-        </h3> -->
-  
-        <!-- Login -->
-        <form class="fields-ctn"
-              action="<%= PATH_LOGIN %>" 
-              method="POST" autocomplete="off">
-  
-            <!--  -->
-            <div class="flex-row">
-              <div class="col-sm-f input-group">
-                <label class="pd-r-s">
-                  <span>ชื่อผู้ใช้หรืออีเมล์</span>
-                  <span class="fc-lime">*</span>
-                </label>
-                <input class="pd-l-m" type="text" name="userNameEmail" 
-                       placeholder="ชื่อผู้ใช้หรืออีเมล์" required>
-              </div>
-            </div>
-  
-            <!--  -->
-            <div class="flex-row mg-t-l">
+        </div>
 
-              <div class="col-sm-8-5 input-group">
-                <label class="pd-r-s">
-                  <span>รหัสผ่าน</span>
-                  <span class="fc-lime">*</span>
-                </label>
-                <input class="pd-l-m" type="password" id="userPassword"  name="userPassword" 
-                      placeholder="กรอกรหัสผ่าน" required>
-              </div>
-  
-              <div class="col-sm-1-5 input-group">
-                <label class="pd-r-s">&nbsp;</label>
-                <button class="al-c btn btn-sm bg-dashed" id="btnViewPassword" type="button" 
-                        title="ดูรหัสผ่าน"><i class="fa fa-eye"></i>         
-                </button>
-              </div>
-  
-            </div>
+        <!--  -->
+        <div class="flex-row mg-t-l">
 
-  
-            <!--  -->
-            <div class="flex-row mg-t-xl">
-              <button class="col-sm-5 bg-login lh-label" type="submit" title="Login">
-                <i class="fa fa-sign-in-alt pd-r-m"></i>เข้าสู่ระบบ
-              </button>
-            </div>
-  
-        </form>
-  
-      </div>
-  
-      <!-- Right -->    
-      <aside class="center-right">
-        <img src="<%= DOMAIN_ALLOW %>/images/logo-300.jpg" 
-              style="max-width: 100%; height: auto;" >
-      </aside>   
-    </section>
+          <div class="col-sm-8-5 input-group">
+            <label class="pd-r-s">
+              <span>รหัสผ่าน</span>
+              <span class="fc-lime">*</span>
+            </label>
+            <input class="pd-l-m" type="password" id="userPassword"  name="userPassword" 
+                  placeholder="กรอกรหัสผ่าน" required>
+          </div>
 
+          <div class="col-sm-1-5 input-group">
+            <label class="pd-r-s">&nbsp;</label>
+            <button class="al-c btn btn-sm bg-dashed" id="btnViewPassword" type="button" 
+                    title="ดูรหัสผ่าน"><i class="fa fa-eye"></i>         
+            </button>
+          </div>
+
+        </div>
+
+
+        <!--  -->
+        <div class="flex-row mg-t-xl">
+          <button class="col-sm-5 bg-login lh-label" type="submit" title="Login">
+            <i class="fa fa-sign-in-alt pd-r-m"></i>เข้าสู่ระบบ
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+
+    <!-- Right -->    
+    <aside class="right">
+      <img src="<%= DOMAIN_ALLOW %>/images/logo-300.jpg" 
+            style="max-width: 100%; height: auto;" >
+    </aside>   
 
   </main>
 

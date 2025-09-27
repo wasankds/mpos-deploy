@@ -1,0 +1,68 @@
+<!--  -->
+<form id="mainForm" autocomplete="off" 
+      action="<%= PATH_SAVE %>" 
+      method="post"
+      onsubmit="createSpinner()">
+
+  <!-- #Tab 1 : General -->      
+  <section>
+
+    <!--  -->
+    <div class="input-group">
+      <label title="DEPLOY">DEPLOY</label> 
+      <select id="DEPLOY" name="DEPLOY">
+        <option value="0" <%= (settingsSystem && settingsSystem.DEPLOY == 0) ? 'selected' : '' %>>0 - Dev</option>
+        <option value="1" <%= (settingsSystem && settingsSystem.DEPLOY == 1) ? 'selected' : '' %>>1 - Server</option>
+      </select>
+    </div>
+
+    <!--  -->
+    <div class="flex-row mg-t-l">
+
+      <!--  -->
+      <div class="col-sm-5 input-group">
+        <label title="PORT_SERVER">PORT_SERVER</label> 
+        <input class=" al-c" type="number" id="PORT_SERVER" 
+                name="PORT_SERVER" id="PORT_SERVER" min="80" max="8999"
+                value="<%= settingsSystem?.PORT_SERVER ?? '' %>"
+                placeholder="PORT_SERVER"
+                <%= user.userAuthority != 'O' ? "readonly" : "" %> >
+      </div>
+
+      <!--  -->
+      <div class="col-sm-5 input-group">
+        <label title="PORT_DEV">PORT_DEV</label> 
+        <input class=" al-c" type="number" id="PORT_DEV" 
+                name="PORT_DEV" id="PORT_DEV"  min="80" max="8999"
+                value="<%= settingsSystem?.PORT_DEV ?? '' %>"
+                placeholder="PORT_DEV"
+                <%= user.userAuthority != 'O' ? "readonly" : "" %> >
+      </div>
+    </div>
+    
+    <!-- LOCALHOST_ALLOW -->
+    <div class="input-group  mg-t-l">
+      <label title="LOCALHOST_ALLOW">LOCALHOST_ALLOW</label> 
+      <input class="al-l pd-l-m" type="text" 
+            name="LOCALHOST_ALLOW" id="LOCALHOST_ALLOW" 
+            value="<%= settingsSystem?.LOCALHOST_ALLOW ?? '' %>"
+            placeholder="LOCALHOST_ALLOW">
+    </div>
+
+    <!-- DOMAIN_ALLOW -->
+    <div class="input-group mg-t-l">
+      <label title="DOMAIN_ALLOW">DOMAIN_ALLOW</label> 
+      <input class="al-l pd-l-m" type="text" 
+              name="DOMAIN_ALLOW" id="DOMAIN_ALLOW" 
+              value="<%= settingsSystem?.DOMAIN_ALLOW ?? '' %>"
+              placeholder="DOMAIN_ALLOW">
+    </div>
+
+    <!-- Buttons/Save -->
+    <section class="flex-row justify-content-center mg-t-xxl">
+      <button class="btn btn-sm bg-save" type="submit">
+        <i class="fas fa-save"></i> บันทึก
+      </button>
+    </section>
+
+</form>

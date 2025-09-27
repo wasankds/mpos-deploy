@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title ? title : '-' %></title>
+
+  <% if(!global.IS_PRODUCTION) { %>
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/utils.css?v=<%= time %>">
+  <% } else { %>
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/print_items.min.css">
+  <% }  %>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap');
+    * {
+      font-family: "Anuphan", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
+    body{
+      max-width: 21cm;
+      margin: auto; 
+    }
+    main{ 
+      padding-top:0.5cm;
+      width: 19cm;
+      overflow: hidden;
+      margin: auto;
+    }
+    footer{ 
+      width: 19cm;
+      margin: auto;
+    }
+
+    p{ 
+      font-size: 0.85rem;
+      margin-top: 0!important;
+      margin-bottom: 0!important;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      padding: 1px;
+      overflow: hidden;
+      font-size: 0.6rem; /* white-space: nowrap; */
+      background: white;
+    }
+
+    .page-break-after { 
+      page-break-after: always; 
+      border-bottom: 1px dashed gray ;
+      padding-bottom: 10px;
+    } 
+    
+    @media print {  .no-print { display: none; } }
+  </style>
+</head>
+<body> 
+
+  <main class="">
+    
+    <!--  -->
+    <p class="al-c fs-s"><%= title %> [<%= dateTime %>]</p>  
+
+    <!--  -->
+    <table style="width: 100%;">
+      <thead>
+        <tr>
+          <th class="ba-k bg-eee">ลำดับ</th>
+          <th class="ba-k bg-eee">ไอดี</th>
+          <th class="ba-k bg-eee">ชื่อ</th>
+          <th class="ba-k bg-eee">ราคา</th>
+          <th class="ba-k bg-eee">สถานะ</th>
+
+          <th class="ba-k bg-eee">แพคเกจ</th>
+          <th class="ba-k bg-eee">ไอเท็มในแพคเกจ/จำนวน</th>
+
+          <th class="ba-k bg-eee">วางขาย</th>
+          <th class="ba-k bg-eee">สต็อก</th>
+
+          <th class="ba-k bg-eee">หมวดหมู่</th>
+          <th class="ba-k bg-eee">หน่วย</th>
+          <th class="ba-k bg-eee">สาขา/ราคา</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% if(data && data.length > 0){ %>
+          <% data.forEach( (obj,index) => { %>            
+          <%
+            const colorActive = obj.itemStatus === 'active' ? '' : 'strike fc-777' ;
+          %>
+          <tr>
+            <td class="<%= colorActive %> ba-k al-c"><%= index+1 %></td>
+            <td class="<%= colorActive %> ba-k al-l pd-l-s"><%= obj.itemId %></td>
+            <td class="<%= colorActive %> ba-k al-l pd-l-s fw-b"><%= obj.itemName.length > 37 ? obj.itemName.substring(0, 37) + '...' : obj.itemName %></td>
+            <td class="<%= colorActive %> ba-k al-r pd-r-s fw-b"><%= obj.itemPrice %></td>
+            <td class="<%= colorActive %> ba-k al-c"><%- obj.itemStatus == 'active' ? '&#10003;' : '-' %></td>
+
+            <td class="<%= colorActive %> ba-k al-c pd-l-s pd-r-s">
+              <span style="float: left;"><%= obj.itemPackageType %></span>
+              <span style="float: right;"><%= obj.itemsInSet && obj.itemsInSet.length > 0 ? obj.itemsInSet.length : '-' %></span>
+            </td>           
+            <td class="<%= colorActive %> ba-k al-c pd-l-s pd-r-s">
+              <% if(obj.itemsInSet && obj.itemsInSet.length > 0) { %>
+                <%-
+                  obj.itemsInSet.map( itm => {
+                    return `<span style="float:left;">${ itm.itemId}</span>` + 
+                           `<span style="float:right;">${ itm.itemAmount}</span>`
+                  }).join('<br>') 
+                %>
+              <% } else { %>
+                <span>-</span>
+              <% } %>
+            </td>
+
+            <td class="<%= colorActive %> ba-k al-c"><%- obj.itemOnSale == '1' ? '&#10003;' : '-' %></td>
+            <td class="<%= colorActive %> ba-k al-c"><%- obj.itemStock == '1' ? '&#10003;' : '-' %></td>
+
+            <td class="<%= colorActive %> ba-k al-c"><%= obj.categoryId %></td>
+            <td class="<%= colorActive %> ba-k al-c"><%= obj.itemUnit %></td>
+            <td class="<%= colorActive %> ba-k al-c pd-l-s pd-r-s">
+              <% if(obj.priceRows && obj.priceRows.length > 0) { %>
+                <%- 
+                  obj.priceRows.map( itm => {
+                    return `<span style="float:left;">${itm.branchId}</span>` +
+                           `<span style="float:right;font-weight: bold;">${itm.branchPrice}</span>`
+                  }).join('<br>') 
+                %>
+              <% } else { %>
+                <span>-</span>
+              <% } %>
+            </td>
+
+          </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+
+    </table>
+
+  </main>
+
+  
+  <!--  -->
+  <footer class="d-flex justify-content-between al-c no-print mg-t-l">
+    <button class="btn bg-black fc--white pd-l-xxl pd-r-xxl pd-t-l pd-b-l clickable" 
+            type="button" onclick="window.print()">พิมพ์
+    </button>
+    <button class="btn bg-black fc--white pd-l-xxl pd-r-xxl pd-t-l pd-b-l clickable" 
+            type="button" onclick="window.close()">ปิดหน้าต่าง
+    </button>
+  </footer>
+
+</body>
+</html>

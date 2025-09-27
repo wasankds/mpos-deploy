@@ -9,6 +9,10 @@
   <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"> -->
   <link rel="stylesheet" href="/cdn/fontawesome/css/all.min.css">
 
+  <!-- SweetAlert2 -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+  <script src="/cdn/sweetalert2.all.min.js"></script>
+
   <% if(!IS_PRODUCTION) { %>
   <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/fonts.css?v=<%= time %>">
@@ -30,146 +34,37 @@
   <%- include('partials/notify.ejs', {msg:msg}) %> 
   <%- include('partials/nav.ejs') %>
 
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <i class="fas fa-cog mg-r-l"></i> 
+      <span><%= title %></span>
+    </p>
+  </header>
+
   <main>
 
-    <% if (user.userAuthority == 'O') { %>
-    <section class="main-title">
-      <h1 class="al-c">
-        <i class="fas fa-cog mg-r-m"></i> 
-        <span><%= title %></span>
-      </h1>
-    </section>  
-
-    <!--  -->
-    <form id="mainForm" autocomplete="off" 
-          action="<%= PATH_SAVE %>" 
-          method="post"
-          onsubmit="createSpinner()">
-
-      <!-- #Tab 1 : General -->      
-      <section>
-
-        <!--  -->
-        <div class="input-group">
-          <label class="" title="DEPLOY">DEPLOY</label> 
-          <select class="" id="DEPLOY" name="DEPLOY">
-            <option value="0" <%= (data && data.DEPLOY == 0) ? 'selected' : '' %>>0 - Development</option>
-            <option value="1" <%= (data && data.DEPLOY == 1) ? 'selected' : '' %>>1 - Production</option>
-          </select>
-        </div>
-
-        <!--  -->
-        <div class="input-group">
-          <label class="" title="PORT_SERVER">PORT_SERVER</label> 
-          <input class=" al-c" type="number" id="PORT_SERVER" 
-                  name="PORT_SERVER" id="PORT_SERVER" 
-                  value="<%= data?.PORT_SERVER ?? '' %>"
-                  placeholder="PORT_SERVER"
-                  <%= user.userAuthority != 'O' ? "readonly" : "" %> >
-        </div>
-
-        <!--  -->
-        <div class="input-group">
-          <label class="" title="PORT_DEV">PORT_DEV</label> 
-          <input class=" al-c" type="number" id="PORT_DEV" 
-                  name="PORT_DEV" id="PORT_DEV" 
-                  value="<%= data?.PORT_DEV ?? '' %>"
-                  placeholder="PORT_DEV"
-                  <%= user.userAuthority != 'O' ? "readonly" : "" %> >
-        </div>
-
-        
-        <!-- LOCALHOST_ALLOW -->
-        <div class="input-group">
-          <label class="" title="LOCALHOST_ALLOW">LOCALHOST_ALLOW</label> 
-          <input class=" al-c" type="text" 
-                name="LOCALHOST_ALLOW" id="LOCALHOST_ALLOW" 
-                value="<%= data?.LOCALHOST_ALLOW ?? '' %>"
-                placeholder="LOCALHOST_ALLOW">
-        </div>
-
-        <!-- DOMAIN_ALLOW -->
-        <div class="input-group">
-          <label class="" title="DOMAIN_ALLOW">DOMAIN_ALLOW</label> 
-          <input class=" al-c" type="text" 
-                 name="DOMAIN_ALLOW" id="DOMAIN_ALLOW" 
-                 value="<%= data?.DOMAIN_ALLOW ?? '' %>"
-                 placeholder="DOMAIN_ALLOW">
-        </div>
-
-      </section>
-
-      <!-- Buttons/Save -->
-      <section class="flex-row justify-content-center mg-t-xxl">
-        <button class="btn btn-sm bg-save" type="submit">
-          <i class="fas fa-save"></i> บันทึก
-        </button>
-      </section>
-
-    </form>
-
-    <% } %>
-
-    <section class="main-title bt pd-t-xxl">
-      <h1 class="al-c">
-        <i class="fas fa-server mg-r-m"></i> 
-        <span>จัดการระบบ</span>
-      </h1>
-    </section>
-
-    <section class="manageSystemCtn">
-
-      <div>
-        <label class="mg-b-m">สำรองฐานข้อมูล</label>
-        <form id="backupForm" class="al-c"
-              onsubmit="createSpinner()"
-              action="<%= PATH_BACKUP_DB %>" method="post">
-          <section class="d-flex">
-            <button type="button" class="btn btn-sm bg-mediumseagreen" id="btnBackupDb">
-              <i class="fas fa-database"></i> Backup Database
-            </button>
-            <button type="submit" class="btn btn-sm bg-green dp-n" id="btnConfirmBackupDb">
-              <i class="fas fa-check-circle"></i> ยืนยัน
-            </button>
-          </section>
-        </form>
-      </div>  
-
-      <div class="mg-t-xl">
-        <label class="mg-b-m">อัปเดทระบบจาก Git</label>
-        <form id="updateForm" class="al-c"
-              onsubmit="createSpinner()"
-              action="<%= PATH_UPDATE_SYSTEM %>" method="post">
-          <section class="d-flex">
-            <button type="button" class="btn btn-sm bg-cornblue" id="btnUpdateSystem">
-              <i class="fas fa-sync"></i> Update System
-            </button>
-            <button type="submit" class="btn btn-sm bg-green dp-n" id="btnConfirmUpdateSystem">
-              <i class="fas fa-check-circle"></i> ยืนยัน
-            </button>
-          </section>
-        </form>
-      </div>
-
-      <div class="mg-t-xl">
-        <label class="mg-b-m">เริ่มระบบใหม่</label>
-        <form id="restartForm" class="al-c" 
-              onsubmit="createSpinner()"
-              action="<%= PATH_RESTART_PM2 %>" method="post">
-          <section class="d-flex">
-            <button type="button" class="btn btn-sm bg-dkorange" id="btnRestartPm2">
-              <i class="fas fa-redo"></i> Restart (PM2)
-            </button>
-            <button type="submit" class="btn btn-sm bg-green dp-n" id="btnConfirmRestartPm2">
-              <i class="fas fa-check-circle"></i> ยืนยัน
-            </button>
-          </section>
-        </form>
-      </div>
+    <!-- Tab links -->
+    <div class="tab">
+      <div class="tabMenu" id="tab1Menu" onclick="event.preventDefault();openMenu(this,'tabcontent1')">เซิร์ฟเวอร์</div>
+      <div class="tabMenu" id="tab2Menu" onclick="event.preventDefault();openMenu(this,'tabcontent2')">อิเมล์</div>
+      <div class="tabMenu" id="tab3Menu" onclick="event.preventDefault();openMenu(this,'tabcontent3')">ไอเท็ม</div>
+    </div>
 
 
+    <!-- #1 -->
+    <div id="tabcontent1" class="tabcontent">
+      <%- include('partials/manageSettingsSystem_server.ejs' ) %>
+    </div>
 
-    </section>
+    <!-- #2 -->
+    <div id="tabcontent2" class="tabcontent">
+      <%- include('partials/manageSettingsSystem_systemEmail.ejs' ) %>
+    </div>
+
+    <!-- #3 -->
+    <div id="tabcontent3" class="tabcontent">
+      <%- include('partials/manageSettingsSystem_items.ejs' ) %>
+    </div>
 
   </main>
 
@@ -178,11 +73,17 @@
 
   <%- include('partials/footer') %>
 
+  <!-- เริ่มต้นคลิกแท็บตอนโหลดหน้าเว็บ -->
+  <script type="text/javascript">
+    const tabNumberClicked = `<%= tabNumberClicked %>`;
+  </script>
+
   <!--  -->
   <% if(!IS_PRODUCTION) { %>
   <script type="text/javascript" src="/js/script_all.js"></script>
   <script type="text/javascript" src="/js/nav.js"></script>
   <script type="text/javascript" src="/js/notify.js"></script>
+  <script type="text/javascript" src="/js/tabMenu.js"></script>
   <script type="text/javascript" src="/js/manageSettingsSystem.js?v=<%= time %>"></script>
   <% } else { %>
   <script type="text/javascript" src="/js-min/manageSettingsSystem.obf.js?v=<%= time %>"></script>
@@ -193,16 +94,72 @@
 
 
 
-      <!-- Buttons/Save -->
-      <!-- <section class="pd-l pd-b-xxl">
-        <div class="row <= userAuthority != 'O' ? 'dp-n' : '' >">
-          <label class="col-33"></label>
-          <div class="col-33 btn-group">
-            <input type="button" id="btnSave"  class="btn-show bg-save lh" value="Save"
-                   onclick="onBtnClicked(this,'ON')">
-            <input type="submit" id="btnSaveConfirm" class="btn-confirm lh" value="Confirm">
-            <input type="button" id="btnSaveCancel"  class="btn-cancel lh" value="Cancel"
-                   onclick="onBtnClicked(this,'CANCEL')">
-          </div>
-        </div>        
-      </section> -->
+<!-- Buttons/Save -->
+<!-- <section class="pd-l pd-b-xxl">
+  <div class="row <= userAuthority != 'O' ? 'dp-n' : '' >">
+    <label class="col-33"></label>
+    <div class="col-33 btn-group">
+      <input type="button" id="btnSave"  class="btn-show bg-save lh" value="Save"
+              onclick="onBtnClicked(this,'ON')">
+      <input type="submit" id="btnSaveConfirm" class="btn-confirm lh" value="Confirm">
+      <input type="button" id="btnSaveCancel"  class="btn-cancel lh" value="Cancel"
+              onclick="onBtnClicked(this,'CANCEL')">
+    </div>
+  </div>        
+</section> -->
+
+<!-- 
+<section class="manageSystemCtn">
+
+  <div>
+    <label class="mg-b-m">สำรองฐานข้อมูล</label>
+    <form id="backupForm" class="al-c"
+          onsubmit="createSpinner()"
+          action="<= PATH_BACKUP_DB >" method="post">
+      <section class="d-flex">
+        <button type="button" class="btn btn-sm bg-mediumseagreen" id="btnBackupDb">
+          <i class="fas fa-database"></i> Backup Database
+        </button>
+        <button type="submit" class="btn btn-sm bg-green dp-n" id="btnConfirmBackupDb">
+          <i class="fas fa-check-circle"></i> ยืนยัน
+        </button>
+      </section>
+    </form>
+  </div>  
+
+  <div class="mg-t-xl">
+    <label class="mg-b-m">อัปเดทระบบจาก Git</label>
+    <form id="updateForm" class="al-c"
+          onsubmit="createSpinner()"
+          action="<= PATH_UPDATE_SYSTEM >" method="post">
+      <section class="d-flex">
+        <button type="button" class="btn btn-sm bg-cornblue" id="btnUpdateSystem">
+          <i class="fas fa-sync"></i> Update System
+        </button>
+        <button type="submit" class="btn btn-sm bg-green dp-n" id="btnConfirmUpdateSystem">
+          <i class="fas fa-check-circle"></i> ยืนยัน
+        </button>
+      </section>
+    </form>
+  </div>
+
+  <div class="mg-t-xl">
+    <label class="mg-b-m">เริ่มระบบใหม่</label>
+    <form id="restartForm" class="al-c" 
+          onsubmit="createSpinner()"
+          action="<= PATH_RESTART_PM2 >" method="post">
+      <section class="d-flex">
+        <button type="button" class="btn btn-sm bg-dkorange" id="btnRestartPm2">
+          <i class="fas fa-redo"></i> Restart (PM2)
+        </button>
+        <button type="submit" class="btn btn-sm bg-green dp-n" id="btnConfirmRestartPm2">
+          <i class="fas fa-check-circle"></i> ยืนยัน
+        </button>
+      </section>
+    </form>
+  </div>
+
+
+
+</section>
+ -->

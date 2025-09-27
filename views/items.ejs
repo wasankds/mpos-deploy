@@ -41,18 +41,52 @@
     const isItem = item != null
   %>
 
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <i class="fa-solid fa-box mg-r-l"></i> 
+      <span><%= title %></span>
+    </p>
+  </header>
+
   <main >
 
-    <!-- Title -->
-    <section class="main-title">
-      <h1 class="al-c">
-        <i class="fas fa-box mg-r-m"></i> 
-        <span><%= title %></span>
-      </h1>
-    </section>
+
+    <!--  -->
+    <form class="dp-n"
+          id="uploadPriceForm" 
+          action="<%= PATH_UPLOAD_ITEMS %>" 
+          method="post" enctype="multipart/form-data">
+
+        <div class="flex-row fc-red fs-sn mg-b-m">
+          ห้ามอัปโหลดขณะใช้เปิดทำการ และต้องลบเซสชั่นทั้งหมด
+        </div>
+
+        <div class="flex-row">
+          <button class="btn btn-sm bg-download" 
+                  id="btnDownloadItems" title="ดาวน์โหลดไอเท็มเป็น Excel">
+            <i class="fas fa-download"></i>
+          </button>
+  
+          <label class="pd-l-l pd-r-m al-r" title="อัปโหลดไอเท็มจากไฟล์ Excel .xlsx">
+            <i class="fas fa-file-excel"></i>
+            <span>อัปโหลด</span>
+          </label>
+          <input class="al-l pd-l-m w-100" type="file" 
+                 title="ไฟล์ Excel .xlsx ไม่เกิน 50MB"
+                 accept=".xlsx"
+                 style="max-width: 400px;"
+                 name="uploadItemsFile"
+                 id="uploadItemsFile">
+          <button class="btn btn-sm bg-upload" 
+                  type="submit" title="อัปโหลดไอเท็มจากไฟล์ Excel">
+              <i class="fas fa-upload"></i>
+          </button>
+        </div>
+
+    </form>
 
     <!-- Main Form -->
-    <form action="<%= PATH_SAVE %>" id="mainFormCtn"
+    <form action="<%= PATH_SAVE %>" id="mainForm"
           method="post"  enctype="multipart/form-data">
 
       <input type="hidden" name="loadId" value="<%= loadId %>">
@@ -65,23 +99,36 @@
       <!-- Toolbar -->
       <section id="toolbarCtn">
         
-        <button type="submit" class="btn btn-sm bg-save pd-r-l pd-l-l">
-          <i class="fas fa-save pd-r-m"></i>บันทึก
+        <button type="submit" class="btn btn-sm bg-save pd-r-l pd-l-l" title="บันทึก">
+          <!-- <i class="fas fa-save pd-r-m"></i>บันทึก -->
+          <i class="fas fa-save"></i>
         </button>
 
-        <button class="btn btn-sm bg-print pd-r-l pd-l-l" id="btnPrintItems">
-          <i class="fas fa-print pd-r-m"></i>พิมพ์
+        <button class="btn btn-sm bg-print pd-r-l pd-l-l" id="btnPrintItems" title="พิมพ์รายการสินค้า">
+          <i class="fas fa-print"></i>
+          <!-- พิมพ์ -->
         </button>
 
-        <button class="btn btn-sm bg-new pd-r-l pd-l-l" id="btnCreateNew">
-          <i class="fas fa-plus-circle pd-r-m"></i>สร้างใหม่
+        <button class="btn btn-sm bg-new pd-r-l pd-l-l" id="btnCreateNew" title="สร้างใหม่">
+          <!-- <i class="fas fa-plus-circle pd-r-m"></i>สร้างใหม่ -->
+          <i class="fas fa-plus-circle"></i>
         </button>
 
-        <button class="btn btn-sm bg-clear pd-r-l pd-l-l" id="btnClearForm">
-          <i class="fas fa-eraser pd-r-m"></i>ล้าง
-        </button>
+        <div class="nowrap">
+          <button class="btn btn-sm bg-upload pd-r-l pd-l-l" id="btnUploadTool" title="แสดงแถบเครื่องมืออัปโหลดไอเท็ม">
+            <!-- <i class="fas fa-eye pd-r-m"></i>ราคา -->
+            <!-- <i class="fas fa-eye"></i> -->
+            <i class="fas fa-file-excel"></i>
+          </button>
+          <!-- <button class="btn btn-sm bg-download pd-r-l pd-l-l" id="btnDownloadItems" title="ดาวน์โหลดไอเท็มเป็น Excel">
+            <i class="fas fa-download"></i>
+          </button> -->
+        </div>
 
-  
+        <button class="btn btn-sm bg-clear pd-r-l pd-l-l" id="btnClearForm" title="ล้างข้อมูลในฟอร์ม">
+          <i class="fas fa-eraser"></i>
+          <!-- ล้าง -->
+        </button>  
       </section>
   
       <!-- 
@@ -104,7 +151,7 @@
 
             <!--  -->
             <div class="col-sm-4-5 input-group">
-              <label class="mg-r-l" title="<%= ITEM_TYPE_DESCRIPTION %>">
+              <label class="mg-r-l" title="<%= ITEM_ID_DESCRIPTION %>">
                 <i class="fas fa-id-badge"></i>
                 <span>ไอดี/บาร์โค้ด</span><span class="fc-blue mg-l-m">*</span>
               </label>
@@ -112,8 +159,8 @@
                       required                      
                       id="itemId" name="itemId" 
                       <%= isItem && item.itemId ? 'readonly' : '' %>
-                      title="<%= ITEM_TYPE_DESCRIPTION %>"
-                      pattern="<%= ITEM_TYPE_PATTERN %>"
+                      title="<%= ITEM_ID_DESCRIPTION %>"
+                      pattern="<%= ITEM_ID_PATTERN %>"
                       value="<%= isItem ? item.itemId : '' %>" >
             </div>
 
@@ -263,10 +310,12 @@
             <div class="col-sm-2-5 input-group">
               <label class="pd-r-s">
                 <i class="fas fa-money-bill-wave"></i>
-                <span>ราคาขาย</span>
+                <span>ราคาขาย</span><span class="fc-blue mg-l-m">*</span>
               </label>
+              <!-- ราคาติดลบได้ -->
               <input class="al-r pd-l-m" type="number" 
                     placeholder="ราคา (บาท)" title="ราคา (บาท)"
+                    required step="0.01"
                     id="itemPrice" name="itemPrice" 
                     value="<%= isItem ? item.itemPrice : '' %>">
             </div>
@@ -329,16 +378,77 @@
           </div>
         </div>  <!-- #5 -->
 
+        <!-- #6 : ราคาตามสาขา -->         
+        <div class="flex-row justify-content-between mg-t-m bt-d pd-t-m ">
+
+          <div class="col-sm-5" title="ราคาแยกสาขา ถ้าสาขาใดไม่กำหนดจะใช้ราคาหลัก">
+            <label class="text-white mg-l-s">ราคาแยกสาขา</label>
+            <button type="button" class="btn btn-sm bg-undo" 
+                    id="btnUndoPriceRow">
+              <i class="fas fa-undo"></i>
+            </button>
+          </div>
+
+          <div class="col-sm-5 modalCtn">
+            <input class="al-c w-100" type="text" autocomplete="off"
+                   placeholder="เลือกสาขา" title="เลือกสาขา" 
+                   id="chooseUserBranches"
+                   onfocus="popModalUserBranches(event)" 
+                   oninput="popModalUserBranches(event)" >
+            <div class="modal">
+              <div class="modal-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- รายการ - ราคาตามสาขา -->
+        <div class="mg-t-s" id="priceRowsCtn">
+          <% if( isItem && item.priceRows && item.priceRows.length > 0 ){ %>
+          <% item.priceRows.forEach( ( item, index ) => { %>
+          <div class="priceRow flex-row">
+            <input class="col-sm-2-5 al-r pd-r-m" type="number" title="ราคาตามสาขา"
+                   required placeholder="ราคา (บาท)"
+                   name="branchPrice" value="<%= item.branchPrice %>" >
+            <input class="col-sm-1-5 al-c no-arrow" type="number" title="รหัสสาขา"
+                   readonly required 
+                   name="branchId" value="<%= item.branchId %>">
+            <input class="col-sm-5 pd-l-s" type="text" title="ชื่อสาขา"
+                   readonly required 
+                   name="branchName" value="<%= item.branchName %>">    
+            <button class="col-sm-1 btn btn-sm bg-red" 
+                    name="branchPrice" value="<%= item.branchPrice %>"
+                    onclick="removePriceRow(event)"><i class="fas fa-trash"></i></button>
+          </div>
+          <% }) %>
+          <% } %>
+        </div>
       </section>
   
       <!-- Image -->
-      <section id="imageMainCtn" class="bg-liblue d-flex align-items-center justify-content-center">
+      <!-- <section id="imageMainCtn" class="bg-liblue d-flex align-items-center justify-content-center">
         <div class="row">
           <div class="col-f al-c" id="imageCtn">
             <% if( isItem && item.itemImageDataUrl){ %>
               <a href="<%= PATH_VIEW %>/<%= item.itemImage %>" target="_blank">
-                <img src="<%= item.itemImageDataUrl %>" alt="Item Image">
+                <img src="<= item.itemImageDataUrl >" alt="Item Image">
               </a>
+            <% }else{ %>  
+              <div class="al-c fs-m">ไม่มีภาพ</div>
+            <% } %>  
+          </div>
+        </div>
+      </section> -->
+
+      <section id="imageMainCtn" class="bg-liblue d-flex align-items-center justify-content-center">
+        <div class="row">
+          <div class="col-f al-c" id="imageCtn">
+            <% if( isItem && item.itemImageDataUrl){ %>
+              <span href="<%= PATH_VIEW %>/<%= item.itemImage %>" target="_blank">
+                <img src="<%= item.itemImageDataUrl %>" alt="Item Image"
+                     class="clickable"
+                     onclick="event.preventDefault();viewImageInPopup('<%= PATH_VIEW %>/<%= item.itemImage %>')"
+                     title="คลิกเพื่อดูภาพขนาดเต็ม">
+              </span>
             <% }else{ %>  
               <div class="al-c fs-m">ไม่มีภาพ</div>
             <% } %>  
@@ -356,7 +466,7 @@
             <label class="text-white mg-l-s">ไอเท็มในเซ็ต</label>
             <button type="button" class="btn btn-sm bg-undo" 
                     id="btnUndoItemInSet">
-              <i class="fas fa-undo mg-r-m"></i>ย้อน
+              <i class="fas fa-undo"></i>
             </button>
           </div>
 
@@ -438,7 +548,7 @@
       <!--  -->
       <div class="search-2 flex-row flex-nowarp">
 
-        <select class="col-sm-5 al-l" title="ค้นหาตามหมวดหมู่" id="scid" name="scid"  >
+        <select class="col-sm-6-5 al-l" title="ค้นหาตามหมวดหมู่" id="scid" name="scid"  >
           <option value="">-</option>
           <% dataItemsCategory.forEach( obj => { %>
           <option value="<%= obj.categoryId %>" <%= obj.categoryId == scid ? 'selected' : ''  %>>
@@ -448,7 +558,7 @@
         </select>
 
         <!-- ค้นหาตามสถานะ -->
-        <select class="col-sm-5 al-c" title="ค้นหาตามสถานะ" id="sis" name="sis">
+        <select class="col-sm-3-5 al-c" title="ค้นหาตามสถานะ" id="sis" name="sis">
           <option value="">-</option>
           <option value="active" <%= sis == 'active' ? 'selected' : '' %>>active</option>
         </select>
@@ -456,7 +566,7 @@
 
       <!-- แถว/หน้า -->
       <div class="search-3 flex-row flex-nowarp">
-        <label class="col-sm-5 al-r mg-r-s">แถว/หน้า</label>
+        <label class="col-sm-5 al-r pd-r-s">แถว/หน้า</label>
         <select class="col-sm-5 al-c" name="rpp" id="rpp" onchange="this.form.submit()">
           <option value="20" <%= rpp==20 ? 'selected' : '' %> >20</option>
           <option value="25" <%= rpp==25 ? 'selected' : '' %> >25</option>
@@ -530,21 +640,27 @@
             </th> 
             <th class="al-c clickable" onclick="sortTableJs(this, 5)" title="แพคเกจ">
               <i class="fas fas fa-box"></i>
-            </th> 
-            <th class="al-c clickable" onclick="sortTableJs(this, 6)" title="ไอดี">
-              <i class="fas fa-id-badge"></i>
+            </th>
+            <th class="al-c clickable" onclick="sortTableJs(this, 6)" title="จำนวนราคาตามสาขา">
+              <i class="fas fa-code-branch"></i>
             </th>
             <th class="al-c clickable" onclick="sortTableJs(this, 7)" title="ชื่อ">
               [<i class="fas fa-money-bill-wave"></i>]
               <i class="fas fa-font"></i>
             </th>
-            <th class="al-c clickable" onclick="sortTableJs(this, 8)" title="หน่วย">
+            <th class="al-c clickable" onclick="sortTableJs(this, 8)" title="ไอดี">
+              <i class="fas fa-id-badge"></i>
+            </th>            
+            <th class="al-c clickable" onclick="sortTableJs(this, 9)" title="หน่วย">
               <i class="fas fa-balance-scale"></i>
             </th>   
-            <th class="al-c clickable" onclick="sortTableJs(this, 9)" title="หมวดหมู่">
+            <th class="al-c clickable" onclick="sortTableJs(this, 10)" title="หมวดหมู่">
               <i class="fas fa-layer-group"></i>
             </th>         
             <th class="al-c"><i class="fas fa-trash-alt"></i></th>
+            <% if(user.userAuthority == 'O'){ %>
+              <th class="al-c"><i class="fas fa-trash" title="สำหรับการลบด้วยยูสเซอร์ O เท่านั้น"></i></th>
+            <% } %>
           </tr>
         </thead>
 
@@ -610,8 +726,14 @@
               <span><%= itemPackageType_Show %></span>
             </td> 
 
+
             <!-- 7 -->
-            <td class="al-l pd-l-s nowrap t-itemId <%= class1Color %>" title="<%= obj.itemId %>"><%= obj.itemId %></td>
+            <td class="al-c <%= class2Color %>">
+              <% if(obj.priceRows ){ %>
+                <%= obj.priceRows.length == 0 ? '-' : obj.priceRows.length %>
+              <% } %>              
+            </td>
+
 
             <!-- 8 -->
             <td class="al-l pd-l-s nowrap " title="<%= obj.itemName %>">
@@ -620,19 +742,20 @@
             </td>   
 
             <!-- 9 -->
-            <td class="al-c <%= class2Color %>"><%= obj.itemUnit %></td>     
+            <td class="al-l pd-l-s nowrap t-itemId <%= class1Color %>" title="<%= obj.itemId %>"><%= obj.itemId %></td>
 
             <!-- 10 -->
+            <td class="al-c <%= class2Color %>"><%= obj.itemUnit %></td>     
+
+            <!-- 11 -->
             <td class="al-l pd-l-s <%= class2Color %>">
               <span class="fc-cornblue">[<%= obj.categoryId %>]</span>
               <span><%= obj.categoryName %></span>
             </td>               
 
-            <!-- 11 -->
+            <!-- 12 -->
             <td class="al-c">
-              <% if(obj.itemStatus == 'เบิก'){ %>
-                <span class="fc-gray" title="ไอเท็มอยู่ในสถานะเบิก ลบไม่ได้">x</span>
-              <% }else if(obj.isCanDelete && obj.canDelete != false ){ %>
+              <% if(obj.isCanDelete && obj.canDelete != false ){ %>
                 <form action="<%= PATH_DELETE %>"  method="post" class="al-c">
                   <!-- hidden -->
                   <input type="hidden" name="_id" value="<%= obj._id %>">
@@ -643,9 +766,8 @@
                   <input type="hidden" name="scid" value="<%= scid %>">
                   <input type="hidden" name="sis" value="<%= sis %>">
                   <input type="hidden" name="itemIdToDelete" value="<%= obj.itemId %>">
-
                   <!-- btn-delete ใช้สำหรับ SWal -->
-                  <button class="btn-delete btn-delete pd-l-m pd-r-m pd-t-s pd-b-s bg-delete"
+                  <button class="btn-delete bg-delete pd-l-m pd-r-m pd-t-s pd-b-s "
                           type="submit"><i class="fas fa-trash-alt"></i>
                   </button>
                 </form>
@@ -653,6 +775,31 @@
                 <span class="fc-gray">-</span>
               <% } %>
             </td>
+
+            <!-- 13 -->
+            <% if(user.userAuthority == 'O'){ %>
+            <td class="al-c">
+              <% if( obj.canDelete != false ){ %>
+                <form action="<%= PATH_DELETE %>"  method="post" class="al-c">
+                  <!-- hidden -->
+                  <input type="hidden" name="_id" value="<%= obj._id %>">
+                  <input type="hidden" name="loadId" value="<%= loadId %>">
+                  <input type="hidden" name="page" value="<%= pageAct %>">
+                  <input type="hidden" name="rpp" value="<%= rpp %>">
+                  <input type="hidden" name="sip" value="<%= sip %>">
+                  <input type="hidden" name="scid" value="<%= scid %>">
+                  <input type="hidden" name="sis" value="<%= sis %>">
+                  <input type="hidden" name="itemIdToDelete" value="<%= obj.itemId %>">
+                  <!-- btn-delete ใช้สำหรับ SWal -->
+                  <button class="btn-delete bg-black  pd-l-m pd-r-m pd-t-s pd-b-s"
+                          type="submit"><i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              <% }else{ %>
+                <span class="fc-gray">-</span>
+              <% } %>
+            </td>
+            <% } %>
 
           </tr>
           <% }) %>
@@ -669,10 +816,14 @@
 
   <!--  -->
   <script>
+    var PATH_MAIN = `<%= PATH_MAIN %>` ;
     var PATH_FETCH = `<%= PATH_FETCH %>` ;
     var PATH_PRINT = `<%= PATH_PRINT %>` ;
+    var PATH_DOWNLOAD_ITEMS = `<%= PATH_DOWNLOAD_ITEMS %>` ;
+    var PATH_UPLOAD_ITEMS = `<%= PATH_UPLOAD_ITEMS %>` ;
     var PREFIX = `<%= PREFIX %>` ;
     var userAuthority = `<%= user.userAuthority %>` ;
+    var DATA_USER_BRANCHES = JSON.parse(`<%- dataUserBranchesJson %>`) ;
   </script>
   <% if(!IS_PRODUCTION) { %>
   <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
@@ -714,6 +865,23 @@
 </template>
 
 
+<!--  -->
+<template id="templatePriceRow">
+  <div class="priceRow flex-row">
+    <input class="col-sm-2-5 al-r pd-r-m" type="number"  title="ราคาตามสาขา"
+           required placeholder="ราคา (บาท)"
+           name="branchPrice" >
+    <input class="col-sm-1-5 al-c no-arrow" type="number" title="รหัสสาขา"
+            readonly required 
+            name="branchId">
+    <input class="col-sm-5 pd-l-s" type="text"  title="ชื่อสาขา"
+            readonly required 
+            name="branchName">            
+    <button class="col-sm-1 btn btn-sm bg-red" 
+            name="branchPrice"
+            onclick="removePriceRow(event)"><i class="fas fa-trash"></i></button>
+  </div>
+</template>
 
 
 <!--  -->

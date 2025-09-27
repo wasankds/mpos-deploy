@@ -31,15 +31,15 @@
   <%- include('partials/nav.ejs') %>
   <%- include('partials/notify.ejs', {msg:msg}) %> 
 
+  <header>
+    <p class="al-c fc-white">
+      <i class="fas fa-user-clock mg-r-l"></i> 
+      <span><%= title %></span>
+    </p>
+  </header>
+
   <main>
 
-    <!-- Title -->
-    <section class="main-title">
-      <h1 class="al-c">
-        <i class="fas fa-user-clock mg-r-m"></i> 
-        <span><%= title %></span>
-      </h1>
-    </section>  
 
     <!-- #1 : Toolbar-->
     <section class="toolbar-ctn">
@@ -52,7 +52,7 @@
         <input type="hidden" name="page" value="<%= page %>">
 
         <button type="submit" class="btn btn-sm bg-clear pd-l-l pd-r-l al-c nowrap">
-          <i class="fas fa-eraser"></i> ล้าง
+          <i class="fas fa-eraser"></i> ล้างเซสชั่นว่าง
         </button>
       </form>
 

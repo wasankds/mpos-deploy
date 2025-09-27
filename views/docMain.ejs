@@ -14,6 +14,7 @@
   <script src="/cdn/flatpickr.js"></script>
 
   <% if(!IS_PRODUCTION) { %>
+  <!-- <link rel="stylesheet" href="/css/cb.css"> -->
   <link rel="stylesheet" href="/css/utils.css">
   <link rel="stylesheet" href="/css/fonts.css">
   <link rel="stylesheet" href="/css/alink.css">
@@ -34,9 +35,17 @@
 
   <!-- header -->
   <%- include('partials/nav.ejs') %>
-  <%- include('partials/notify.ejs', {msg:msg}) %> 
-  
+  <%- include('partials/notify.ejs', {msg:msg}) %>   
+
+
 <body>
+
+  <header class="title-header <%= CLASS_BG_COLOR %>">
+    <p class="al-c fc-white">
+      <i class="<%= FA %>"></i>
+      <span><%= LIST_TITLE %></span>
+    </p>
+  </header>
 
   <!-- Toolbar -->
   <header class="header-ctn">
@@ -78,7 +87,7 @@
       <!--  -->
       <!-- data-show-price : กรณีต้องการแสดงราคาในดหมดปุ่มใส่ 1 -->
       <%
-        let showPrice = ['sales'].includes(DOC_TYPE) ? 1 : 0 ; 
+        let showPrice = ['sales','return'].includes(DOC_TYPE) ? 1 : 0 ; 
       %>
       <div class="header-toolbar-3">
         <button class="btn btn-sm bg-switch" 
@@ -104,10 +113,14 @@
       <!--  -->
       <div class="header-toolbar-5">
         <div class="d-flex align-items-center">
+
+          <% if(hoursCanEdit > 0){ %>
           <button class="btn btn-sm bg-finish" title="จบเอกสาร"
                   id="btnFinishDoc" >
             <i class="fa fa fa-flag-checkered mg-r-s"></i>จบ
           </button>
+          <% } %>
+          
           <button class="btn btn-sm bg-cancel mg-l-s" title="ยกเลิกเอกสาร"
                   id="btnCancelDoc" >
             <i class="fa fa fa-times-circle mg-r-s"></i>ยกเลิก
@@ -145,6 +158,7 @@
               <input class="col-sm-3-5 al-c" type="text" 
                      placeholder="วันที่และเวลา" title="วันที่และเวลา"
                      readonly data-alway-readonly="1"
+                     style="border-right: none;"
                      name="docDateTime" id="docDateTime">
               <input class="col-sm-2 al-c bdr3-right" type="text" 
                      placeholder="สถานะ" title="<%= DOC_STATUS_TITLE %>"
@@ -196,23 +210,60 @@
         </div><!-- #1.2 -->
 
         <!-- #1.3 -->
-        <div class="flex-row">        
+        <% if(['warehouseIn'].includes(DOC_TYPE)){ %>
+        <div class="flex-main mg-t-s">
 
+          <div class="flex-4 flex-row">
+            <div class="col-sm-f modalCtn lh-3xs">
+              <input class="al-c bg-ligreen bdr3 pd-t-s pd-b-s " type="text" 
+                     id="searchSuppliers"  placeholder="ค้นหาผู้จัดจำหน่าย"
+                     onfocus="popModalSuppliers(event)" 
+                     oninput="popModalSuppliers(event)" >
+              <div class="modal"><div class="modal-list"></div></div>
+            </div>
+          </div> 
+
+          <div class="flex-6 flex-row">
+            <input class="col-sm-3 al-c bdr3-left " 
+                    type="text" title="ไอดีผู้จัดจำหน่าย" placeholder="ไอดี"
+                    style="border-right: none;"
+                    required readonly  data-alway-readonly="1"
+                    name="supplierId" id="supplierId" >
+            <input class="col-sm-7 al-l pd-l-s bdr3-right " 
+                    type="text" title="ชื่อผู้จัดจำหน่าย" placeholder="ชื่อผู้จัดจำหน่าย"
+                    required readonly data-alway-readonly="1"
+                    name="supplierName" id="supplierName" >
+          </div> 
+
+        </div>
+        <!-- #1.3 -->
+        <% } %>
+
+        <!-- #1.4 -->
+        <div class="flex-row">
+
+          <!-- เอกสารอ้างอิงมีเฉพาะใน Warehouse/return -->
           <% if(['warehouseIn', 'warehouseOut', 'return'].includes(DOC_TYPE)){ %>
           <!--  -->
-          <div class="col-sm-5 flex-row">
+          <div class="col-sm-4 flex-row">
             <div class="col-sm-f input-group">
-              <label class="pd-r-s">
+              <%
+                const isRequiredRef = (DOC_TYPE == 'return') ? 'required' : '' ;
+                const titleRef = (DOC_TYPE == 'return') ? 'ต้องมีเลขที่เอกสารอ้างอิง' : '' ;
+              %>
+              <label class="pd-r-s" title="<%= titleRef %>">
                 <span>เอกสารอ้างอิง</span>
-              </label>
+                <% if(isRequiredRef){ %><span class="fc-red">*</span><% } %>
+              </label>              
               <input class="al-c bdr3" type="text" title="เอกสารอ้างอิง"
                       name="refId" id="refId"
+                      <%= isRequiredRef %>
                       placeholder="เอกสารอ้างอิง">
             </div>
           </div>
 
           <!--  -->
-          <div class="col-sm-5 flex-row">
+          <div class="col-sm-6 flex-row">
 
             <div class="col-sm-w100 input-group">
               <label class="pd-r-s">
@@ -222,8 +273,8 @@
               <!-- ไม่ต้องระบุ name เพราะจะไปจับจาก id แยกต่างหาก -->
               <input class="al-l ba-8 bdr3 pd-l-s" type="file" 
                      style="padding-top: 2px;"
-                     title="ไฟล์ภาพ .jpg, .jpeg, .png ไม่เกิน 10MB"
-                     accept="image/jpeg, image/jpg, image/png"
+                     title="ไฟล์ภาพ .jpgไม่เกิน 10MB"
+                     accept="image/jpeg"
                      id="refImage">
             </div>
   
@@ -237,10 +288,9 @@
             </div>
 
           </div>
-           <% } %>
+          <% } %>
 
-        </div> <!-- #1.3 -->
-
+        </div> <!-- #1.4 -->
 
       </section> 
 
@@ -264,80 +314,73 @@
       </section> 
 
       <!-- #4 -->
-      <div id="tableRowCtn"> <!-- <div id="tableListCtn"> -->
+      <div id="tableRowCtn">
 
-        <!-- สำหรับสร้างรายการ -->
-        <div class="al-c mg-t-l fw-b <%= CLASS_COLOR %>">
-          <i class="<%= FA %>"></i>
-          <span><%= LIST_TITLE %></span>
-        </div>
+
         <!--  -->
         <div id="listCtn"></div>
 
         <!--  -->
-        <% if(['warehouseIn', 'sales'].includes(DOC_TYPE)){ %>
+        <% if(['warehouseIn', 'sales', 'return'].includes(DOC_TYPE)){ %>
         <section class="flex-row mg-t-m" id="mainTotalCtn">
 
           <!-- ชำระเงิน1 -->
-          <% if(['sales'].includes(DOC_TYPE)){ %>
-          <div class="col-sm-2-5 payment-ctn " id="paymentMethod1Ctn">
-            <label>ชำระเงิน1</label>
-            <div>
-              <input type="radio" name="paymentMethod1" id="paymentCash" value="Cash" required>
-              <label for="paymentCash">เงินสด</label>
+          <% if(['sales','return'].includes(DOC_TYPE)){ %>
+          <div class="col-sm-3 payment-ctn " id="paymentMethod1Ctn">
+            <div class="input-group">
+              <label>ชำระเงิน1</label>
+              <input class="w-100 al-r pd-r-s bdr3 no-arrow" type="number" placeholder="จำนวนเงิน1"
+                      name="paymentAmount1" id="paymentAmount1" required>
             </div>
-            <div>
-              <input type="radio" name="paymentMethod1" id="paymentBankTransfer" value="BankTransfer" required>
-              <label for="paymentBankTransfer">โอนเงิน</label>
-            </div>     
-            <div>
-              <input type="radio" name="paymentMethod1" id="paymentOther" value="Other" required>
-              <label for="paymentOther">อื่นๆ</label>
-            </div>
-            <!--  -->
-            <input class="w-100 al-r pd-r-s bdr3 no-arrow" type="number" placeholder="จำนวนเงิน1"
-                    name="paymentAmount1" id="paymentAmount1" required>
+            <% global.PAY_TYPE1.forEach( obj => { %>
+              <% if(obj.page.includes(DOC_TYPE)){ %>
+              <div>
+                <input type="radio" name="paymentMethod1" id="<%= obj.id %>"   
+                      value="<%= obj.paytype %>" required>
+                <label for="<%= obj.id %>" class="<%= obj.color %>"><%= obj.payTypeThai %></label>
+              </div>            
+              <% } %>
+            <% }) %>
           </div>
 
           <!-- ชำระเงิน2 -->
-          <div class="col-sm-2-5 payment-ctn pd-l-m" id="paymentMethod2Ctn">
-            <label>ชำระเงิน2</label>
-            <div>
-              <input type="radio" name="paymentMethod2" id="paymentNoUse2" value="NoUse" required>
-              <label for="paymentNoUse2">ไม่ใช้</label>
-            </div>  
-            <div>
-              <input type="radio" name="paymentMethod2" id="paymentBankTransfer2" value="BankTransfer" required>
-              <label for="paymentBankTransfer2">โอนเงิน</label>
-            </div>        
-            <div>
-              <input type="radio" name="paymentMethod2" id="paymentOther2" value="Other" required>
-              <label for="paymentOther2">อื่นๆ</label>
+          <div class="col-sm-4 payment-ctn pd-l-m" id="paymentMethod2Ctn">
+            <div class="input-group">
+              <label class="">ชำระเงิน2</label>
+              <input class="w-100 al-r pd-r-s bdr3  no-arrow" type="number" placeholder="จำนวนเงิน2"
+                     name="paymentAmount2" id="paymentAmount2" required>
             </div>
-            <!--  -->
-            <input class="w-100 al-r pd-r-s bdr3  no-arrow" type="number" placeholder="จำนวนเงิน2"
-                    name="paymentAmount2" id="paymentAmount2" required>
+            <% global.PAY_TYPE2.forEach( obj => { %>
+              <% if(obj.page.includes(DOC_TYPE)){ %>
+              <div>
+                <input type="radio" name="paymentMethod2" id="<%= obj.id %>"   
+                      value="<%= obj.paytype %>" required>
+                <label for="<%= obj.id %>" class="<%= obj.color %>"><%= obj.payTypeThai %></label>
+              </div>
+              <% } %>
+            <% }) %>  
           </div>
 
           <% }else{ %>
           <!-- ถ้าไม่มีข้างบนใช้ตัวนี้ -->
-          <div class="col-sm-5"></div>  
+          <div class="col-sm-7"></div>  
           <% } %>
+
           <!-- รวม -->          
-          <div class="col-sm-5 flex-row">
-            <label class="mg-r-s">รวม</label>
+          <div class="col-sm-3 flex-row">
+            <label class="mg-r-s">&nbsp;</label>
             <input class="bdr3 al-r pd-r-s" type="text" placeholder="รวมเงิน"
-                   style="height:1.75rem;width: 100%;" 
-                   readonly required
-                   data-alway-readonly="1"
-                   id="totalAmount" name="totalAmount">
+                    style="max-height:1.65rem;width: 100%;" 
+                    readonly required
+                    data-alway-readonly="1"
+                    id="totalAmount" name="totalAmount">
           </div>
         </section>
         <% } %>
       </div>
 
       <!-- #5 หมายเหตุ -->
-      <div class="flex-row mg-t-s">        
+      <div class="flex-row mg-t-s">
         <label class="pd-r-s">หมายเหตุ</label>
         <input class="col-sm-w100 al-l pd-l-s bdr3" type="text" title="หมายเหตุ" placeholder="หมายเหตุ"
                name="docRemark" id="docRemark">
@@ -348,29 +391,42 @@
         <div class="d-flex justify-content-between">
 
           <!--  -->
-          <button class="btn btn-sm bg-save" id="btnSave" title="บันทึก">
+          <%
+            const saveTitle = `ระยะเวลาแก้ไข ${hoursCanEdit} ชม.\nระยะเวลายกเลิก ${hoursCanCancel} ชม.`
+          %>
+          <button class="btn btn-sm bg-save" id="btnSave" title="<%= saveTitle %>">
             <i class="fa fa fa-save mg-r-s"></i>บันทึก
           </button>
 
-          <!--  -->
-          <div>
-            <button class="btn btn-sm bg-print" id="btnPrint" title="พิมพ์">
-              <i class="fa  fa-solid fa-print mg-r-s"></i>พิมพ์
-            </button>
-            <button class="btn btn-sm btn-sm bg-download" id="btnDownloadImage" title="ดาวน์โหลดภาพ">
-              <i class="fa fa fa-download mg-r-s"></i>ภาพ
-            </button>
-          </div>
+          <!-- <div> รวมกลุ่มปุ่มไว้ใกล้กัน -->
+          <button class="btn btn-sm bg-print" id="btnPrint" title="พิมพ์">
+            <i class="fa  fa-solid fa-print mg-r-s"></i>พิมพ์
+          </button>
+
+          <% if(settings.DOWNLOAD_DOC_AS_IMAGE == 'on'){ %>
+          <button class="btn btn-sm btn-sm bg-download" id="btnDownloadImage" title="ดาวน์โหลดภาพ">
+            <i class="fa fa fa-download mg-r-s"></i>ภาพ
+          </button> 
+          <% } %>
+          <!-- </div> -->
           
-          <!--  -->
+          <% if(hoursCanEdit > 0){ %>
           <button class="btn btn-sm bg-change " id="btnPrintChanges" title="ดูประวัติการเปลี่ยนแปลง">
             <i class="fa fa-solid fa-print mg-r-s"></i>ประวัติ
           </button>
+          <% } %>
+
         </div>
       </div>
         
-    </form>
-    
+    </form>    
+
+
+    <!-- ยืนยันชำระหนี้แล้ว มีกรณีที่มีการค้างชำระ -->
+    <% if(['sales'].includes(DOC_TYPE)){ %>    
+    <section id="payDebtCtn"></section> <!-- ต้องทำให้ว่างเพื่อ empty จะทำงานได้ -->
+    <% } %>
+
     <!-- แจ้งเวลา -->
     <section class="dp-n" id="docRemain" >
       <div id="docRemainEdit"></div>
@@ -378,7 +434,6 @@
     </section>
 
   </main>
-
 
 
   <%- include('partials/footer.ejs') %>
@@ -396,9 +451,14 @@
     const PATH_STATUS =  `<%= PATH_STATUS %>` ; 
     const PATH_VIEW_IMAGE =  `<%= PATH_VIEW_IMAGE %>` ;
     const PATH_FETCH_IMAGE =  `<%= PATH_FETCH_IMAGE %>` ; 
+    const PATH_PAY_DEBT =  `<%= PATH_PAY_DEBT %>` ;
     // สำหรับโหลดหรือค้นหาเลย
+    const DOC_TYPE =  `<%= DOC_TYPE %>` ;
     const DOC_ID =  `<%= DOC_ID %>`;
     const SIP = `<%= SIP %>` ;
+    const PAY_TYPE =  JSON.parse(`<%- PAY_TYPE_JSON %>`) ; // กรณีไม่มีจะเป็นสตริงว่าง
+    const PAY_TYPE1 = JSON.parse(`<%- PAY_TYPE1_JSON %>`) ; // กรณีไม่มีจะเป็นสตริงว่าง
+    const PAY_TYPE2 = JSON.parse(`<%- PAY_TYPE2_JSON %>`) ; // กรณีไม่มีจะเป็นสตริงว่าง
   </script>
 
   <% if(!IS_PRODUCTION) { %>
@@ -421,5 +481,89 @@
 
 
 
-<!-- <script type="text/javascript" src="/js/doc_crudSame.js"></script> -->
-<!-- <script type="text/javascript" src="/js/doc_print.js"></script> -->
+<!-- เทมเพลตฟอร์มชำระเงิน -->
+<% if(['sales'].includes(DOC_TYPE)){ %>
+
+<!--  -->
+<template id="templatePayDebtToolbar">
+  <div class="pay-debt-toolbar d-flex justify-content-between pd-l-m">
+    <!-- Add -->
+    <div>
+      <label class="fs-sm fc-white pd-r-s">ชำระหนี้</label>
+      <button class="btn btn-sm bg-save btn-add-pay-debt-row"
+              onclick="addPayDebtRow(event)"><i class="fas fa-plus pd-l-s pd-r-s"></i>
+      </button>
+    </div>
+    <!-- Undo -->
+    <button class="btn btn-sm bg-undo btn-undo-pay-debt-row"
+            onclick="undoPayDebtRow(event)"><i class="fas fa-rotate-left pd-l-s pd-r-s"></i>
+    </button>
+    <!-- Save -->
+    <button class="btn btn-sm bg-save btn-save-pay-debt" title="บันทึกการชำระหนี้"
+        onclick="savePayDebt(event)"><i class="fas fa-save mg-r-s"></i>บันทึกการชำระหนี้
+    </button>
+  </div>  
+</template>
+
+<!--  -->
+<template id="templatePayDebtRow">
+  <div class="pay-debt-row flex-main">
+    <!--  -->
+    <div class="flex-4 flex-row">
+      <input class="col-sm-4 al-r pd-r-m bdr3-left no-arrow" 
+             required
+             type="number" name="payDebt_amount"
+             placeholder="จำนวนเงินที่ชำระหนี้" title="จำนวนเงินที่ชำระหนี้">
+      <input class="col-sm-6 al-c bdr3-right no-arrow"
+             style="border-left: none;"
+             required readonly
+             type="text" name="payDebt_dateTime"
+             placeholder="วันที่ชำระหนี้" title="วันที่ชำระหนี้">
+    </div>
+    <!--  -->
+    <div class="flex-6 flex-row">
+      <input class="col-sm-2 al-c bdr3-left no-arrow" 
+             required readonly 
+             type="number" name="payDebt_userId"
+             placeholder="ไอดี" title="ไอดี">
+  
+      <input class="col-sm-7 al-l pd-l-m bdr3-right" 
+             style="border-left: none;"
+             required readonly 
+             type="text" name="payDebt_userFullname"
+             placeholder="ผู้รับชำระหนี้" title="ผู้รับชำระหนี้">
+
+      <button class="col-sm-1 btn btn-sm bg-delete btn-remove-debt-row"
+              onclick="removePayDebtRow(event)"><i class="fas fa-trash"></i>
+      </button>
+    </div>
+  </div>
+</template>
+<% } %>
+
+
+
+
+
+<!--  -->
+<!-- <div class="lh-2xs">
+  <span class="fc-white fs-sm">ผู้รับชำระหนี้ : </span>
+  <span class="fc-liblue fs-sm">[</span>
+  <span class="fc-liblue fs-sm payDebt_userId"></span>
+  <span class="fc-liblue fs-sm">]</span>
+  <span class="fc-white fs-sm payDebt_userFullname"></span>
+</div> -->
+
+<!--  -->
+  <!-- <div class="lh-2xs">
+  <span class="fc-white fs-sm">วันที่ชำระหนี้ : </span>
+  <span class="fc-liblue fs-sm payDebt_dateTime"></span>
+</div> -->
+
+
+<!-- 
+<label class="cb-ctn mg-r-xl fc-white">ชำระหนี้แล้ว
+  <input type="checkbox" id="payDebt" name="payDebt">
+  <span class="cb-checkmark"></span>
+</label> 
+-->

@@ -1,12 +1,13 @@
 
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 
   <title><%= title %></title>
 
   <% if(!IS_PRODUCTION) { %>
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/utils.css?v=<%= time %>">
-  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/flex.css?v=<%= time %>">
+  <!-- <link rel="stylesheet" href="<= global.DOMAIN_ALLOW >/css/flexNew.css?v=<= time >"> -->
   <% } else { %>
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/doc_print.min.css">
   <% }  %>
@@ -42,7 +43,10 @@
       background: white;
       color: black;
     }
+    @media print {  .no-print { display: none; } }
   </style>
+
+
 </head>
 <body>
 
@@ -56,9 +60,29 @@
     </p>
     <p class="al-l">วันที่และเวลา : <span class="fw-b"><%= doc.docDateTime %></span></p>
     <p class="al-l mg-t-m">สาขา : <span class="fw-b">[<%= doc.branchId %>] <%= doc.branchName %></span></p>
-    <p class="al-l">ยูสเซอร์ : <span class="fw-b">[<%= doc.userId %>] <%= doc.userFullname %></span></p>
-    <% if(doc.totalAmount) { %>
+    <p class="al-l">ยูสเซอร์ : <span class="fw-b">[<%= doc.userId %>] <%= doc.userFullname.length > 22 ? doc.userFullname.substring(0, 22) + '..' : doc.userFullname %></span></p>
+
+    <% if(doc.supplierId) { %>
+    <p class="al-l mg-t-m">ผู้จัดจำหน่าย : <span class="fw-b">[<%= doc.supplierId %>] <%= doc.supplierName %></span></p>
+    <% } %>
+
+
+    <% if(['sales','return','warehouseIn'].includes(docType)) { %>
     <p class="al-l mg-t-m">รวม : <span class="fw-b"><%= doc.totalAmount %></span></p>
+    <% } %>
+
+    <% if(doc.paymentMethod1) { %>      
+    <p class="al-l">ชำระเงิน1 : 
+      <span class="">[<%= doc.paymentMethod1Name %>]</span> 
+      <span class="fw-b"><%= doc.paymentAmount1 %></span>
+    </p>
+    <% } %>
+
+    <% if(doc.paymentMethod2) { %>
+    <p class="al-l">ชำระเงิน2 : 
+      <span class="">[<%= doc.paymentMethod2Name %>]</span> 
+      <span class="fw-b"><%= doc.paymentAmount2 %></span>
+    </p>
     <% } %>
 
     <% if(doc.tableRows && doc.tableRows.length > 0) { %>
@@ -78,20 +102,57 @@
       </div>
       <% }) %>
     <% } %>
-    
-    <section class="mg-t-s al-c">      
+
+    <!-- ฟอร์มให้เซ้นชื่อ -->
+    <% if( doc.paymentMethod2 == 'Debt') { %>
+    <section class="box-black mg-t-m pd-b-m">
+      <p class="al-l pd-t-xl pd-b-xl">ผู้ค้างชำระ : </p>
+      <p class="al-l pd-t-xl pd-b-xl mg-b-l">ลงชื่อ : </p>
+    </section>
+    <% } %>
+
+    <!-- การชำระหนี้ -->
+    <% if( doc.paymentMethod2 == 'Debt') { %>
+    <section class="mg-t-m pd-t-m bt-d bb-d">
+      <% if( doc.payDebtRows && doc.payDebtRows.length > 0 ) { %>
+        <p class="al-c">
+          <span>รายการชำระหนี้</span>
+          <%- doc.isDebtPaidOff ? '<span class="fw-b">[ ชำระครบแล้ว ]</span>' : '' %>
+        </p>
+        <% doc.payDebtRows.forEach( (obj, index) => { %>
+          <div class="pd-t-s pd-b-s <%= index > 0 ? 'bt-d' : '' %>">
+            <p class="al-l">
+              <span class="">วันที่</span>
+              <span class="fw-b"><%= obj.dateTime %></span>
+            </p>
+            <p class="al-l">
+              <span>จำนวนเงิน : </span>
+              <span class="fw-b"><%= obj.amount %></span>
+            </p>
+            <p class="al-l">
+              <span>ผู้รับชำระ : </span>
+              <span class="fw-b">[<%= obj.userId %>] <%= obj.userFullname.length > 22 ? obj.userFullname.substring(0, 22) + '..' : obj.userFullname %></span>
+            </p>
+          </div>
+        <% }) %>
+      <% } %>
+    </section>
+    <% } %>
+
+    <section class="mg-t-s al-c">
       <p class="fs-s">
-        <%= dataSettings.COMPANY_NAME %>
+        <%= settings.COMPANY_NAME %>
       </p>
       <p class="fs-ss">
         <%= global.SYS_NAME %> <%= global.SYS_NAME2 %> v.<%= global.SYS_VERSION %>
       </p>
     </section>
+
   </main>
 
   <!--  -->
   <% if(action == 'print') { %>
-  <footer class="al-c no-print mg-t-xl">
+  <footer class="al-c no-print d-flex justify-content-between pd-l-l pd-r-l">
     <button class="btn bg-black fc--white pd-l-xxl pd-r-xxl pd-t-l pd-b-l clickable" 
             type="button" onclick="window.print()">พิมพ์
     </button>
@@ -105,67 +166,3 @@
 </html>
 
 
-
-<!-- 
-
-
-console.log("changesHistory ===> ", changesHistory)
-    changesHistory ===>  [
-      {
-        dateTime: '2025-08-20 14:43',
-        userId: 1000,
-        userFullname: 'นาย Wasan Khunnadiloksawet',
-        changes: [
-          [Object], [Object],
-          [Object], [Object],
-          [Object], [Object],
-          [Object], [Object],
-          [Object]
-        ]
-      },
-      {
-        dateTime: '2025-08-20 14:42',
-        userId: 1000,
-        userFullname: 'นาย Wasan Khunnadiloksawet',
-        changes: [ [Object], [Object], [Object] ]
-      }
-    ]
-
-    console.log("changesHistory[0].changes ===> ", changesHistory[0].changes)
-    changesHistory[0].changes ===>  [
-      { field: 'customerId', oldValue: 10001, newValue: 10002 },
-      {
-        field: 'customerName',
-        oldValue: 'FinSide Co.,Ltd',
-        newValue: 'นายสมชาย ใจดี'
-      },
-      {
-        field: 'customerAddress1',
-        oldValue: '999999 Soi Bangna 9999',
-        newValue: '123 ถนนสุขุมวิท แขวงคลองตันเหนือ เขตวัฒนา'
-      },
-      {
-        field: 'customerAddress2',
-        oldValue: 'ถนนบางนา-ตราด  ต.บางแก้ว อ.บางพลี  จ.สมุทรปราการ  11111',
-        newValue: 'กรุงเทพมหานคร 10110'
-      },
-      {
-        field: 'customerContact',
-        oldValue: '0811234567, finside@gmail.com',
-        newValue: 'โทรฯ, 012-345-6789, www.example.com'
-      },
-      { field: 'customerTaxId', oldValue: '1234567890123', newValue: '' },
-      { field: 'totalAmount', oldValue: 4500, newValue: 2500 },
-      { field: 'netAmount', oldValue: 4500, newValue: 2500 },
-      {
-        field: 'tableRows',
-        oldValue: [ [Object], [Object], [Object], [Object], [Object] ],
-        newValue: [ [Object], [Object], [Object], [Object] ]
-      }
-    ]
-
-    console.log("changesHistory[0].changes[8].oldValue ===> ", changesHistory[0].changes[8].oldValue)
-    console.log("changesHistory[0].changes ===> ", changesHistory[0].changes[8].newValue)
-
-    
--->

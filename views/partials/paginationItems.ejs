@@ -17,15 +17,27 @@
 
   <!-- Previous -->
   <form class="col-pg-mid" action="<%= PATH_MAIN %>" method="get">
-      <input type="hidden" name="rpp" value="<%= rpp %>">
-      <input type="submit" class="btn-pre" 
-             name="page" id="_pagePre" title="หน้าก่อนหน้า"
-             value="<%= pagePre %>" <%= pagePre == '-' ? 'disabled' : '' %> >
+    <input type="hidden" name="loadId" value="<%= loadId %>">
+    <input type="hidden" name="page" value="<%= page %>">
+    <input type="hidden" name="rpp" value="<%= rpp %>">
+    <input type="hidden" name="sip" value="<%= sip %>">
+    <input type="hidden" name="scid" value="<%= scid %>">
+    <input type="hidden" name="sis" value="<%= sis %>">
+
+    <input type="submit" class="btn-pre" 
+            name="page" id="_pagePre" title="หน้าก่อนหน้า"
+            value="<%= pagePre %>" <%= pagePre == '-' ? 'disabled' : '' %> >
   </form>  
 
   <!-- Select Page -->
   <form class="col-pg-select" action="<%= PATH_MAIN %>" method="get">
+    <input type="hidden" name="loadId" value="<%= loadId %>">
+    <input type="hidden" name="page" value="<%= page %>">
     <input type="hidden" name="rpp" value="<%= rpp %>">
+    <input type="hidden" name="sip" value="<%= sip %>">
+    <input type="hidden" name="scid" value="<%= scid %>">
+    <input type="hidden" name="sis" value="<%= sis %>">
+
     <select class="al-c" 
             name="page" onchange="this.form.submit()" title="หน้าปัจจุบัน">
       <% for(let i=1; i<=pageLst; i++){ %>
@@ -36,7 +48,13 @@
 
   <!-- Next -->
   <form class="col-pg-mid" action="<%= PATH_MAIN %>" method="get">
+    <input type="hidden" name="loadId" value="<%= loadId %>">
+    <input type="hidden" name="page" value="<%= page %>">
     <input type="hidden" name="rpp" value="<%= rpp %>">
+    <input type="hidden" name="sip" value="<%= sip %>">
+    <input type="hidden" name="scid" value="<%= scid %>">
+    <input type="hidden" name="sis" value="<%= sis %>">
+
     <input type="submit" class="btn-nxt" 
             name="page" id="_pageNxt" title="หน้าถัดไป"
             value="<%= pageNxt %>" <%= pageNxt == '-' ? 'disabled' : '' %> >
@@ -44,9 +62,15 @@
 
   <!-- Last Page -->
   <form class="col-pg-rim" action="<%= PATH_MAIN %>" method="get">
-      <input type="hidden" name="rpp" value="<%= rpp %>">
-      <input type="submit" class="btn-lst" 
-             name="page" value="<%= pageLst %>" title="หน้าสุดท้าย">
+    <input type="hidden" name="loadId" value="<%= loadId %>">
+    <input type="hidden" name="page" value="<%= page %>">
+    <input type="hidden" name="rpp" value="<%= rpp %>">
+    <input type="hidden" name="sip" value="<%= sip %>">
+    <input type="hidden" name="scid" value="<%= scid %>">
+    <input type="hidden" name="sis" value="<%= sis %>">
+
+    <input type="submit" class="btn-lst" 
+            name="page" value="<%= pageLst %>" title="หน้าสุดท้าย">
   </form>
   
 </div>

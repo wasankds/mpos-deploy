@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title ? title : '-' %></title>
+
+  <% if(!global.IS_PRODUCTION) { %>
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/utils.css?v=<%= time %>">
+  <% } else { %>
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/print_suppliers.min.css">
+  <% }  %>
+
+  <style>
+   @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap');
+    * {
+      font-family: "Anuphan", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
+    body{
+      max-width: 21cm;
+      margin: auto; 
+    }
+    main{ 
+      padding-top:0.5cm;
+      width: 19cm;
+      overflow: hidden;
+      margin: auto;
+    }
+    footer{ 
+      width: 19cm;
+      margin: auto;
+    }
+
+    p{ 
+      font-size: 0.85rem;
+      margin-top: 0!important;
+      margin-bottom: 0!important;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td, td * {
+      padding: 1px;
+      overflow: hidden;
+      font-size: 0.7rem; /* white-space: nowrap; */
+      background: white;
+    }
+
+    .page-break-after { 
+      page-break-after: always; 
+      border-bottom: 1px dashed gray ;
+      padding-bottom: 10px;
+    } 
+
+    @media print {  .no-print { display: none; } }
+  </style>
+</head>
+<body> 
+
+  <main class="">
+    <!--  -->
+    <p class="al-c fs-s"><%= title %> [<%= dateTime %>]</p> 
+    
+    <!--  -->
+    <table style="width: 100%;">
+
+      <thead>
+        <tr>
+          <th class="ba-k bg-eee">ลำดับ</th>
+          <th class="ba-k bg-eee">เลขที่</th>
+          <th class="ba-k bg-eee">ประเภท</th>
+          <th class="ba-k bg-eee">ชื่อ</th>
+          <th class="ba-k bg-eee">ติดต่อ</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% if(data && data.length > 0){ %>
+          <% data.forEach( (obj,index) => { %>
+          <%
+            const classActive = obj.supplierStatus == 'active' ? '' : 'fc-gray strike'
+          %>
+          <tr>
+            <td class="<%= classActive %> ba-k al-c"><%= index+1 %></td>
+            <td class="<%= classActive %> ba-k al-c"><b><%= obj.supplierId %></b></td>
+            <td class="<%= classActive %> ba-k al-c"><b><%= obj.supplierType %></b></td>
+            <td class="<%= classActive %> ba-k al-l"><b><%= obj.supplierName %></b></td>
+            <td class="<%= classActive %> ba-k al-l">
+              <p>
+                ที่อยู่ 1 : <span class=""><b><%= obj.supplierAddress1 ? obj.supplierAddress1 : '-' %></b></span>                  
+              </p>
+              <p>
+                ที่อยู่ 2 : <span class=""><b><%= obj.supplierAddress2 ? obj.supplierAddress2 : '-' %></b></span>
+              </p>
+              <p>
+                จังหวัด : <span class=""><b><%= obj.supplierProvince ? obj.supplierProvince : '-' %></b></span>
+              </p>
+              <p>
+                โทรศัพท์ : <span class=""><b><%= obj.supplierPhone ? obj.supplierPhone : '-' %></b></span>
+              </p>
+              <p>
+                เว็บไซต์ : <span class=""><b><%= obj.supplierWebsite ? obj.supplierWebsite : '-' %></b></span>
+              </p>
+              <p>
+                ผู้ติดต่อ : <span class=""><b><%= obj.supplierContactPerson ? obj.supplierContactPerson : '-' %></b></span>
+              </p>
+              <p>
+                  เลขประจำตัวประชาชน : <span class=""><b><%= obj.supplierIdentityId ? '✔️' : '-' %></b></span>
+              </p>
+              <p>
+                เลขประจำตัวผู้เสียภาษี : <span class=""><b><%= obj.supplierTaxId ? '✔️' : '-' %></b></span>
+              </p>
+            </td>
+          </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+
+  </main>
+
+  <!--  -->
+  <footer class="d-flex justify-content-between al-c no-print mg-t-l">
+    <button class="btn bg-black fc--white pd-l-xxl pd-r-xxl pd-t-l pd-b-l clickable" 
+            type="button" onclick="window.print()">พิมพ์
+    </button>
+    <button class="btn bg-black fc--white pd-l-xxl pd-r-xxl pd-t-l pd-b-l clickable" 
+            type="button" onclick="window.close()">ปิดหน้าต่าง
+    </button>
+  </footer>
+
+</body>
+</html>

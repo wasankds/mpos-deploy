@@ -36,7 +36,8 @@
                   onclick="moveWindow(this)">&#8681;</span>              
           </p>
         </th>
-        <th class="ov-hide" colspan="10">
+
+        <th class="ov-hide" colspan="4">
           <p>
             <span class="fc-white pd-l-m">เลขที่เอกสาร : </span>
             <a href="<%= global.DOMAIN_ALLOW %><%= PATH_DOC %>?docId=<%= doc.docId %>" target="_blank">
@@ -44,6 +45,14 @@
             </a>
           </p>
         </th>
+
+        <!-- พิมพ์ -->
+        <th class="ov-hide al-r">
+          <p>
+            <span class="btn-print" onclick="printDoc('<%= doc.docId %>')">🖨️</span>
+          </p>
+        </th>
+
       </tr>
     </thead>
 
@@ -76,26 +85,88 @@
         </td>
       </tr>
 
-      <% if( doc.totalAmount !== null && doc.totalAmount !== undefined){ %>
+      <% if( doc.supplierId !== null && doc.supplierId !== undefined){ %>
       <tr class="bd-n">
-        <td class="bg-white">ยอดรวม :</span></td>
+        <td class="bg-white">ผู้จัดจำหน่าย :</span></td>
         <td colspan="5">
-          <span class="fc-green"><%= doc.totalAmount %></span>
+          <span class="fc-tan">[<%= doc.supplierId %>]</span>
+          <span class="fc-brown"><%= doc.supplierName %></span>
         </td>
       </tr>
       <% } %>
 
+      <% if(['sales','return','warehouseIn'].includes(docType) ){ %>
+        <tr class="bd-n">
+          <td class="bg-white">ยอดรวม :</span></td>
+          <td colspan="5">
+            <span class="fc-blue fw-b"><%= doc.totalAmount %></span>
+          </td>
+        </tr>
+      <% } %>
+
+      <% if(['sales','return'].includes(docType) ){ %>
+      <tr>
+        <td class="bg-white">ชำระเงิน :</td>
+
+        <% if( doc.paymentMethod1){ %>
+        <td class="bg-white" colspan="5">
+          <span class="al-r">[1] : </span>
+          <%
+            const colorPay1 = global.PAY_TYPE.find( o => o.paytype == doc.paymentMethod1 )?.color || 'fc-black';
+          %>
+          <span class="<%= colorPay1 %>">[<%= doc.paymentMethod1Name %>]</span>
+          <span class="<%= colorPay1 %> fw-b"><%= doc.paymentAmount1 == 0 ? '-' : doc.paymentAmount1 %></span>
+        <% } %>
+
+        <% if( doc.paymentMethod2){ %>
+          <span class="al-r mg-l-xl">[2] : </span>
+          <%
+            const colorPay2 = global.PAY_TYPE.find( o => o.paytype == doc.paymentMethod2 )?.color || 'fc-black';
+          %>
+          <span class="al-r <%= colorPay2 %>">[<%= doc.paymentMethod2Name %>]</span>
+          <span class="al-l <%= colorPay2 %> fw-b"><%= doc.paymentAmount2 == 0 ? '-' : doc.paymentAmount2 %></span>
+        </td>
+        <% } %>
+      </tr>
+      <% } %>
+
+
+      <!-- รายการชำระหนี้ -->
+      <% if(['sales'].includes(docType) ){ %>
+        <% if( doc.paymentMethod2 == 'Debt' && doc.payDebtRows && doc.payDebtRows.length > 0){ %>
+        <tr class="bd-n">
+          <td class="bg-white">รายการชำระหนี้ :</span></td>
+          <td colspan="5">
+            <% doc.payDebtRows.forEach( (obj, index) => { %>
+              <p class="<%= index > 0 ? 'pd-t-m' : '' %>">
+                <span>จำนวนเงิน : </span>
+                <span class="fc-green fw-b"><%= obj.amount %> </span>
+                <span class="fc-dkcyan">[<%= obj.dateTime %>]</span>
+              </p>
+              <!-- <p><span>วันที่ : </span></p> -->
+              <p>
+                <span>ผู้รับชำระ : </span>
+                <span class="fc-plum">[<%= obj.userId %>]</span>
+                <span class="fc-mgt"><%= obj.userFullname.length > 18 ? obj.userFullname.slice(0, 18) + '..' : obj.userFullname %></span>
+              </p>
+            <% }) %>
+          </td>
+        </tr>
+        <% } %>
+      <% } %>
+
+
       <% if(doc.tableRows && doc.tableRows.length > 0){ %>
-        <% 
-          doc.tableRows.forEach( (obj,index) => {
-          const description_Slice = obj.description.length > 37 ? obj.description.slice(0, 37) + '...' : obj.description;
-        %>
+        <% doc.tableRows.forEach( (obj,index) => { %>
 
         <tr class="al-r" >
           <td class="al-l" style="background-color: white">
             <span><%= index+1 %>.)</span>
             <span><%= obj.itemId %></span>
           </td>
+          <%
+            const description_Slice = obj.description.length > 37 ? obj.description.slice(0, 37) + '...' : obj.description;
+          %>
           <td class="al-l"><%= description_Slice %></td>
           <td class="al-r"><%= obj.quantity %></td>
           <td class="al-c"><%= obj.unit %></td>
@@ -104,6 +175,15 @@
         </tr>
         <% }) %>
       <% } %>
+
+      <tr class="bd-n">
+        <td class="bg-white">หมายเหตุ :</span></td>
+        <td colspan="5">
+          <span class=""><%= doc.docRemark ? doc.docRemark : '-' %></span>
+        </td>
+      </tr>
+
+
     </tbody>
   </table>
 </div>

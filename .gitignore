@@ -10,6 +10,7 @@ warehouse-out
 sales
 backup
 return
+copy.js
 
 # Logs
 logs
