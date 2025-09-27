@@ -107,8 +107,14 @@
         <!-- #1 : Toolbar-->
         <div class="toolbar-ctn">
 
+          <!-- ล้างฟอร์ม -->
+          <button class="btn btn-sm bg-clear" id="btnClearForm" title="ล้างฟอร์ม">
+            <i class="fas fa-broom"></i>
+            <!-- ล้างฟอร์ม -->
+          </button>
+
           <!-- สร้างใหม่ ให้ล้างฟอร์มไปเลย -->
-          <button class="btn btn-sm bg-new" id="btnCreateNew" title="สร้างใหม่">
+          <button class="btn btn-sm bg-new" id="btnCreateNew" title="สร้างใหม่ทันที">
             <i class="fas fa-plus-circle"></i>
             <!-- สร้างใหม่ -->
           </button>
@@ -218,30 +224,27 @@
                 <select class="pd-l-m al-c" name="userAuthority" id="userAuthority" required >
 
                   <!-- 1.) มีทุกกรณี -->
-                  <option value=""  <%= (isItem && item.userAuthority == '-') ?  'selected' : '' %>>-</option>
+                  <option value="" <%= (isItem && item.userAuthority == '-') ?  'selected' : '' %>>-</option>
 
-                  <!-- 2.) ผูู้ใช้งานเป็น A : จะเลือกได้เฉพาะ A,U -->
-                  <% if( ['A'].includes(user.userAuthority) ){ %>
-                  <option value="A" <%= (isItem && item.userAuthority == 'A') ? 'selected' : '' %>>A</option>
-                  <option value="U" <%= (isItem && item.userAuthority == 'U') ? 'selected' : '' %>>U</option>
-                  <% } %>
-
-                  <!-- 3.) ผูู้ใช้งานเป็น S : จะเลือกได้เฉพาะ S,A,U -->
+                  <!-- 2.) ผูู้ใช้งานเป็น S : จะเลือกได้เฉพาะ A,U แต่แก้ของตัวเองไม่ได้ -->
                   <% if( ['S'].includes(user.userAuthority) ){ %>
-                  <option value="S" <%= (isItem && item.userAuthority == 'S') ? 'selected' : '' %>>S</option>
-                  <option value="A" <%= (isItem && item.userAuthority == 'A') ? 'selected' : '' %>>A</option>
-                  <option value="U" <%= (isItem && item.userAuthority == 'U') ? 'selected' : '' %>>U</option>
+                    <% if(item && item._id != user.user_id ){ %>
+                      <option value="A" <%= (isItem && item.userAuthority == 'A') ? 'selected' : '' %>>A</option>
+                      <option value="U" <%= (isItem && item.userAuthority == 'U') ? 'selected' : '' %>>U</option>
+                    <% }else{ %>
+                      <option value="S" <%= (isItem && item.userAuthority == 'S') ? 'selected' : '' %>>S</option>
+                    <% } %>
                   <% } %>
 
-                  <!-- 4. ถ้าเป็น O -->
+                  <!-- 3. ถ้าเป็น O -->
                   <% if(['O'].includes(user.userAuthority)){ %>
                     <!-- ไม่ใช่ตัวเอง(session) -->
                     <!-- ถ้าเป็นตัวเองที่กำลังใช้งานอยู่ ไม่สามารถเปลี่ยนสิทธิตัวเองเป็น A/U ได้ -->
                     <% if(item && item._id != user.user_id ){ %>
+                      <option value="O" <%= (isItem && item.userAuthority == 'O') ? 'selected' : '' %>>O</option>
+                      <option value="S" <%= (isItem && item.userAuthority == 'S') ? 'selected' : '' %>>S</option>
                       <option value="A" <%= (isItem && item.userAuthority == 'A') ? 'selected' : '' %>>A</option>
                       <option value="U" <%= (isItem && item.userAuthority == 'U') ? 'selected' : '' %>>U</option>
-                      <option value="S" <%= (isItem && item.userAuthority == 'S') ? 'selected' : '' %>>S</option>
-                      <option value="O" <%= (isItem && item.userAuthority == 'O') ? 'selected' : '' %>>O</option>
                     <% }else{ %>
                       <option value="O" <%= (isItem && item.userAuthority == 'O') ? 'selected' : '' %>>O</option>
                     <% } %>
@@ -436,8 +439,9 @@
                 let color_userAuthority = '';
                 if(obj.userIsActive == 'active'){
                   color_userAuthority = obj.userAuthority === 'O' ? 'fc-blue'
-                    : obj.userAuthority === 'A' ? 'fc-magenta'
-                    : obj.userAuthority === 'U' ? 'fc-plum'
+                    : obj.userAuthority === 'S' ? 'fc-dodgerblue'
+                    : obj.userAuthority === 'A' ? 'fc-green'
+                    : obj.userAuthority === 'U' ? 'fc-magenta'
                     : 'fc-black';
                 } else {
                   color_userAuthority = 'fc-gray strike';
@@ -530,12 +534,11 @@
   <!--  -->
   <script type="text/javascript">
     var PATH_MAIN = `<%= PATH_MAIN %>` ;     
+    var PATH_NEW = `<%= PATH_NEW %>` ;
     var PREFIX = '<%= PREFIX %>' ; 
     var PATH_PRINT = `<%= PATH_PRINT %>` ;     
     var PATH_DOWNLOAD_EXCEL = `<%= PATH_DOWNLOAD_EXCEL %>` ;
     var PATH_UPLOAD_EXCEL = `<%= PATH_UPLOAD_EXCEL %>` ;
-    var userAuthority = '<%= user.userAuthority %>' ;
-    var USER_AUTHORITIES = JSON.parse(`<%- JSON.stringify(global.USER_AUTHORITIES) %>`) ;
   </script>
   <% if(!IS_PRODUCTION) { %>
   <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>

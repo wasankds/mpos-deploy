@@ -45,26 +45,25 @@
 
     <!-- Tab links -->
     <div class="tab">
-      <div class="tabMenu" id="tab1Menu" onclick="event.preventDefault();openMenu(this,'tabcontent1')">เซิร์ฟเวอร์</div>
-      <div class="tabMenu" id="tab2Menu" onclick="event.preventDefault();openMenu(this,'tabcontent2')">อิเมล์</div>
-      <div class="tabMenu" id="tab3Menu" onclick="event.preventDefault();openMenu(this,'tabcontent3')">ไอเท็ม</div>
+      <div class="tabMenu" id="tab1Menu" onclick="event.preventDefault();openMenu(this,'tabcontent1')">อิเมล์</div>
+      <div class="tabMenu" id="tab2Menu" onclick="event.preventDefault();openMenu(this,'tabcontent2')">ไอเท็ม</div>
+      <!-- <div class="tabMenu" id="tab1Menu" onclick="event.preventDefault();openMenu(this,'tabcontent1')">เซิร์ฟเวอร์</div> -->
     </div>
-
 
     <!-- #1 -->
     <div id="tabcontent1" class="tabcontent">
-      <%- include('partials/manageSettingsSystem_server.ejs' ) %>
+      <%- include('partials/manageSettingsSystem_systemEmail.ejs' ) %>
     </div>
 
     <!-- #2 -->
     <div id="tabcontent2" class="tabcontent">
-      <%- include('partials/manageSettingsSystem_systemEmail.ejs' ) %>
-    </div>
-
-    <!-- #3 -->
-    <div id="tabcontent3" class="tabcontent">
       <%- include('partials/manageSettingsSystem_items.ejs' ) %>
     </div>
+
+    <!-- #1 : ห้ามลบ -->
+    <!-- <div id="tabcontent1" class="tabcontent">
+      <- include('partials/manageSettingsSystem_server.ejs' ) >
+    </div> -->
 
   </main>
 
