@@ -35,14 +35,21 @@
   <%- include('partials/nav.ejs') %>
   <%- include('partials/notify.ejs', {msg:msg}) %> 
 
+  <!-- -->
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <span><%= title %></span>
+    </p>
+  </header>
+
   <main>    
     <!--  -->
     <section class="main-left">
 
       <!-- Toolbar#1 -->
-      <div class="flex-row">
+      <!-- <div class="flex-row">
         <h3 class="col-sm-w100 al-c" id="docTitle"><%= title %></h3>
-      </div>
+      </div> -->
 
       <% if(['O','S'].includes(user.userAuthority)){ %>
       <!-- Toolbar#1 -->
