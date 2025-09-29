@@ -5,26 +5,44 @@
   "description": "",
   "main": "mpos.js",
   "scripts": {
+    "min-0": "node commandSystem/min_main.js",
     "min-1": "node commandSystem/min_css_js.js",
     "min-2": "node commandSystem/delete_min_js.js",
     "min-3": "node commandSystem/min_routes.js",
     "min-4": "node commandSystem/min_mymodule.js",
     "min-c": "node commandSystem/min_commandSystem.js",
+    "min-all" : "npm run min-1 && npm run min-2 && npm run min-3 && npm run min-4 && npm run min-c",
+
     "create-f": "node commandSystem-min/create_folders.js",
     "create-i": "node commandSystem-min/create_dbCollectionIndex.js",
+    "create-all": "npm run create-f && npm run create-i",
+
     "clear-db-docs": "node commandSystem-min/clear_db_docs.js",
     "clear-db-data": "node commandSystem-min/clear_db_data.js",
     "clear-db-entire": "node commandSystem-min/clear_db_entire.js",
-    "dev": "nodemon mpos.js",
+
     "app": "node mpos.js",
-    "kill": "taskkill /f /im node.exe",
+    "dev": "nodemon mpos.js",
+    "kill-win": "taskkill /f /im node.exe",
+    "kill-mac": "pkill -9 node",
+    "kill-linux": "pkill -9 node",
+
+    "mongo-v": "mongod --version",
+    "node-v": "node --version",
+
     "start": "pm2 start mpos.js -i 0",
+    "stop": "pm2 stop mpos.js",
     "start1": "pm2 start mpos.js -i 1",
     "restart": "pm2 restart mpos.js",
     "delete": "pm2 delete mpos.js",
-    "clear_db": "node clear_db.js",
+    "start-name": "pm2 start --name='mpos-main' mpos.js -i 0",
+    "stop-name": "pm2 stop mpos-main",
+    "start1-name": "pm2 start mpos.js --name='mpos-main' -i 1",
+    "restart-name": "pm2 restart mpos-main",
+    "delete-name": "pm2 delete mpos-main",
+
     "git1": "git add . && git commit -m \"%date% %time%\" && git push origin main",
-    "use_nvm": "nvm use 22.16.0"
+    "use-nvm": "nvm use 22.16.0"
   },
   "keywords": [],
   "author": "",

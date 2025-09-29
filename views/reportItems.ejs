@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="/cdn/fontawesome/css/all.min.css">
   <!-- SweetAlert2 -->
   <script src="/cdn/sweetalert2.all.min.js"></script>
+  <!-- Flatpkr -->
+  <link rel="stylesheet" href="/cdn/flatpickr.min.css">
+  <script src="/cdn/flatpickr.js"></script>
 
   <% if(!IS_PRODUCTION) { %>
   <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
@@ -32,59 +35,100 @@
   <%- include('partials/nav.ejs') %>
   <%- include('partials/notify.ejs', {msg:msg}) %> 
 
+  <!-- -->
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <span><%= title %></span>
+    </p>
+  </header>
+
   <main>    
-    <!--  -->
+
+    <!-- รายงานสรุปไอเท็ม -->
     <section class="main-left">
 
-      <!-- Toolbar#1 -->
       <div class="flex-row">
-        <!-- <button class="btn btn-sm bg-clear nowrap" type="button" 
-                onclick="clearSelect()">
-          <i class="fa fa-broom mg-r-s"></i>ล้างค่า
-        </button>  -->
-        <h3 class="al-c col-sm-f" id="docTitle"><%= title %></h3>
+        <label class="col-sm-w100 al-c">รายงานสรุปไอเท็ม</label>
+      </div>
+  
+      <!-- เดือน -->
+      <div class="flex-row">
+        <button class="btn btn-sm bg-report-m-1 mg-r-s" type="button" title="ดูรายงาน"
+                id="btn_v_concludeMonth">
+          <i class="fa fa-eye"></i> 
+        </button>
 
-        <!-- <button class="btn btn-sm bg-create nowrap" type="button"  id="btnGenerateReport">
-          <i class="fa fa-broom mg-r-s"></i>สร้างรายงาน
-        </button>  -->
-      </div> 
+        <label class="al-r pd-r-s">เดือน</label>
+        <select class="col-sm-w100 al-c" id="selectMonth_conclude">
+          <% monthDocs.forEach( m => { %>
+          <option value="<%= m.month %>"><%= m.monthName %></option>
+          <% }) %>
+        </select>
+
+        <button class="btn btn-sm bg-report-m-1 nowrap" type="button" title="สร้างรายงาน"
+                id="btn_g_concludeMonth"> <!-- <i class="fa fa-archive mg-r-s"></i> -->
+          สร้างรายงานเดือน
+        </button> 
+      </div>
+
+      <!-- วัน -->
+      <div class="flex-row">
+        <button class="btn btn-sm bg-report-d-1 mg-r-s" type="button" title=" ดูรายงาน(เดี่ยว)"
+                id="btn_v_concludeDay">
+          <i class="fa fa-eye"></i> 
+
+        </button>
+        <label class="al-r pd-r-s">วันที่</label>
+        <input class="col-sm-w100 al-c bg-white clickable bdr3" type="date" 
+               id="selectDateTh_conclude">
+        <button class="btn btn-sm bg-report-d-1 nowrap" type="button" 
+                id="btn_g_concludeDay"> <!-- <i class="fa fa-archive mg-r-s"></i> -->
+          สร้างรายงานวัน
+        </button> 
+      </div>
 
     </section>
     
     <!--  -->
     <section class="main-right">
 
-      <!--
       <div class="flex-row">
+        <label class="col-sm-w100 al-c">รายงานแบบแตกไอเท็ม</label>
+      </div>
+      
+      <div class="flex-row">
+        <button class="btn btn-sm bg-report-m-2 mg-r-s" type="button" title=" ดูรายงานไอเท็ม"
+                id="btn_v_breakdown_month">
+          <i class="fa fa-eye"></i> 
+        </button>
+
         <label class="al-r pd-r-s">เดือน</label>
-        <select class="col-sm-w100 al-c" id="selectMonth" name="selectMonth">          
+        <select class="col-sm-w100 al-c" id="selectMonth_breakdown">
           <% monthDocs.forEach( m => { %>
           <option value="<%= m.month %>"><%= m.monthName %></option>
           <% }) %>
-        </select>      
-        <button class="btn btn-sm bg-mediumseagreen" 
-                type="button" id="btnCalendar" 
-                onclick="concludeDocsCalendar(this,'calendarReport');">
-          <i class="fa fa-calendar"></i>
-        </button>
-      </div> -->
+        </select>
 
-      <!-- right#3 -->
-      <div class="flex-row space-between">
-
-        <button class="btn btn-sm bg-create nowrap" type="button"  id="btnGenerateReport">
-          <i class="fa fa-broom mg-r-s"></i>สร้างรายงาน
+        <button class="btn btn-sm bg-report-m-2 nowrap" type="button" 
+                id="btn_g_breakdown_month">  <!-- <i class="fa fa-archive mg-r-s"></i> -->
+                สร้างรายงานเดือน
         </button> 
+      </div>
 
-        <!-- <button class="btn btn-sm bg-dodgerblue " type="button" 
-                id="btnItem1Report">
-          <i class="fa fa-box"></i> ไอเท็ม1
-        </button>  -->
-        <button class="btn btn-sm bg-dodgerblue " type="button" 
-                id="btnItem2Report">
-          <i class="fa fa-box"></i> ดูรายงานไอเท็ม
+      <!--  -->
+      <div class="flex-row">
+        <button class="btn btn-sm bg-report-d-2 mg-r-s" type="button" title=" ดูรายงานไอเท็ม"
+                id="btn_v_breakdown_day">
+          <i class="fa fa-eye"></i> 
+
         </button>
-
+        <label class="al-r pd-r-s">วันที่</label>
+        <input class="col-sm-w100 al-c bg-white clickable bdr3" type="date" 
+              id="selectDateTh_breakdown">
+        <button class="btn btn-sm bg-report-d-2 nowrap" type="button" 
+                id="btn_g_breakdown_day"> <!-- <i class="fa fa-archive mg-r-s"></i> -->
+          สร้างรายงานวัน
+        </button> 
       </div>
 
     </section>
@@ -101,10 +145,12 @@
     const DOMAIN_ALLOW = `<%= global.DOMAIN_ALLOW %>`
     const USER_AUTHORITY = `<%= user.userAuthority %>`
     const PATH_MAIN = `<%= PATH_MAIN %>`
-    const PATH_GENERATE_ITEMS1 = `<%= PATH_GENERATE_ITEMS1 %>`
-    const PATH_GENERATE_ITEMS2 = `<%= PATH_GENERATE_ITEMS2 %>`
-    const PATH_REPORT_ITEMS2 = `<%= PATH_REPORT_ITEMS2 %>`
-    // const PATH_REPORT_ITEMS1 = `<= PATH_REPORT_ITEMS1 >`
+    const PATH_G_BREAKDOWN_1 = `<%= PATH_G_BREAKDOWN_1 %>`
+    const PATH_G_BREAKDOWN_2 = `<%= PATH_G_BREAKDOWN_2 %>`
+    const PATH_V_BREAKDOWN = `<%= PATH_V_BREAKDOWN %>`
+    const PATH_G_CONCLUDE_ITEMS = `<%= PATH_G_CONCLUDE_ITEMS %>`
+    const PATH_V_CONCLUDE_ITEMS = `<%= PATH_V_CONCLUDE_ITEMS %>`
+    const PATH_LOAD_ITEM = `<%= PATH_LOAD_ITEM %>`
   </script>
 
   <% if(!IS_PRODUCTION) { %>
@@ -112,7 +158,7 @@
   <script type="text/javascript" src="/js/nav.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/notify.js"></script>
   <script type="text/javascript" src="/js/report_windows.js?v=<%= time %>"></script>
-  <script type="text/javascript" src="/js/report_modal.js?v=<%= time %>"></script>
+  <!-- <script type="text/javascript" src="/js/report_modal.js?v=<%= time %>"></script> -->
   <script type="text/javascript" src="/js/reportItems.js?v=<%= time %>"></script>
   <% } else { %>
   <script src="/js-min/reportItems.obf.js"></script>

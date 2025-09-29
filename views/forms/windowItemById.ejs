@@ -1,0 +1,117 @@
+<!--  -->
+<!-- <section class="window-ctn pd-xs col-100" > -->
+
+<!-- 
+<div class="window-title bg-window-2" name="windowTitle">
+  <p class="bg-cornblue">
+    <span class="titleText1 fc-white pd-l-m">สรุปเอกสารเดือน : </span>
+    <span class="titleText2 fc-yellow fw-b"><= title ></span>
+    <span class="titleText2 fc-lime fw-b">( จำนวนเอกสาร = <= doc.length >)</span>
+    <span class="close-window" onclick="closeWindow(this)">✖</span>
+    <span class="expand-window" onclick="copyTable(this)">copy</span>
+    <span class="clickable expand-window" 
+          doc-direction="up"
+          onclick="moveWindow(this)">&#8679;</span>
+    <span class="clickable expand-window" 
+          doc-direction="down"
+          onclick="moveWindow(this)">&#8681;</span>
+  </p>
+</div> 
+-->
+
+<div class="table-ctn" name="tableCtn">
+  <table>
+
+    <colgroup>
+      <col style="width: 20%;">
+      <col style="width: auto;">
+    </colgroup>
+
+
+    <thead>
+      <tr class="<%= titleClassColor %> al-l">
+        <th class="<%= titleClassColor %>">
+          <p>
+            <span class="clickable close-window" onclick="closeWindow(this)">✖</span>
+            <span class="expand-window" onclick="copyTable(this)">copy</span>
+            <span class="clickable expand-window" 
+                  data-direction="up"
+                  onclick="moveWindow(this)">&#8679;</span>
+            <span class="clickable expand-window" 
+                  data-direction="down"
+                  onclick="moveWindow(this)">&#8681;</span>              
+          </p>
+        </th>
+        <th class="ov-hide" colspan="10">
+          <p class="al-l">
+            <span class="fc-lime">[<%= doc.itemId %>]</span>
+            <span class="fc-white"><%= doc.itemName %></span>
+          </p>
+        </th>
+      </tr>
+
+    </thead>
+
+    <!--  -->
+    <tbody>
+
+      <tr>
+        <td class="al-r fc-green" style="background-color: white">ไอเท็ม</td>
+        <td class="al-l">
+          <span class="fc-gray">[<%= doc.itemId %>]</span> 
+          <span class="fc-blue"><%= doc.itemName %></span>
+        </td>
+      </tr>
+
+      <%
+        const packageTypeColor = doc.itemPackageType == 'set' ? 'fc-mgt fw-b' : 'fc-brown fw-b'
+      %>
+      <tr>
+        <td class="al-r">หมวดหมู่ :</td>
+        <td class="al-l">
+          <span class="fc-gray">[<%= doc.categoryId %>]</span>
+          <span class="fc-blue"><%= doc.categoryName %></span>
+          <span>,</span>
+          <span class="mg-l-l">แพคเกจ : </span>
+          <span class="<%= packageTypeColor %>"><%= doc.itemPackageType %></span>
+        </td>
+      </tr>
+      
+      <tr>
+        <!-- <td class="al-r">วางขาย</td> -->
+        <td class="al-r">สถานะ :</td>
+        <td class="al-l">
+          <span class="fc-blue"><%= doc.itemStatus %></span>
+          <span>,</span>
+          <span class="mg-l-xl">วางขาย : </span>
+          <span class="fc-blue"><%= doc.itemOnSale %></span>
+          <span>,</span>
+          <span class="mg-l-xl">ราคา : </span>
+          <span class="fc-blue"><%= doc.itemPrice %></span>
+          <span class="">/</span>
+          <span class="fc-blue"><%= doc.itemUnit %></span>
+        </td>
+      </tr>
+
+      <% if(doc.itemsInSet && doc.itemsInSet.length > 0){ %>
+        <tr>
+          <td></td>
+          <td>สินค้าในชุด : </td>
+        </tr>
+        <% doc.itemsInSet.forEach( (itm, index) => { %>
+        <tr>
+          <td class="al-r"><%= index + 1 %>.)</td>
+          <td class="al-l">
+            <span class="fc-blue clickable" 
+                  onclick="loadItemById('<%= itm.itemId %>')"><%= itm.itemId %></span>
+            <span class="fc-blue">[<%= itm.itemAmount %>]</span>
+          </td>
+        </tr>
+        <% }) %>
+      <% } %>
+
+    </tbody>
+  </table>
+</div>
+
+<!-- </section> -->

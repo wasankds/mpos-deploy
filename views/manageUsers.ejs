@@ -218,10 +218,11 @@
               </div>
 
               <div class="col-sm-2 input-group">
-                <label for="userAuthority" class="pd-r-s al-l" title="สิทธิ์การใช้งาน">
+                <label for="userAuthority" class="pd-r-s al-l" title="<%= global.USER_AUTHORITIES_TITLE %>">
                   <i class="fas fa-user-tag"></i> สิทธิ์ *
                 </label>
-                <select class="pd-l-m al-c" name="userAuthority" id="userAuthority" required >
+                <select class="pd-l-m al-c" title="<%= global.USER_AUTHORITIES_TITLE %>"
+                        name="userAuthority" id="userAuthority" required >
 
                   <!-- 1.) มีทุกกรณี -->
                   <option value="" <%= (isItem && item.userAuthority == '-') ?  'selected' : '' %>>-</option>
