@@ -5,7 +5,6 @@
   "description": "",
   "main": "mpos.js",
   "scripts": {
-    "min-0": "node commandSystem/min_main.js",
     "min-1": "node commandSystem/min_css_js.js",
     "min-2": "node commandSystem/delete_min_js.js",
     "min-3": "node commandSystem/min_routes.js",
@@ -36,11 +35,6 @@
     "restart": "pm2 restart mpos.js",
     "delete": "pm2 delete mpos.js",
 
-    "start-obf": "pm2 start mpos.obf.js -i 0",
-    "stop-obf": "pm2 stop mpos.obf.js",
-    "start1-obf": "pm2 start mpos.obf.js -i 1",
-    "restart-obf": "pm2 restart mpos.obf.js",
-    "delete-obf": "pm2 delete mpos.obf.js",
 
     "start-name": "pm2 start --name='mpos-main' mpos.js -i 0",
     "stop-name": "pm2 stop mpos-main",
