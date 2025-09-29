@@ -35,7 +35,6 @@
     "restart": "pm2 restart mpos.js",
     "delete": "pm2 delete mpos.js",
 
-
     "start-name": "pm2 start --name='mpos-main' mpos.js -i 0",
     "stop-name": "pm2 stop mpos-main",
     "start1-name": "pm2 start mpos.js --name='mpos-main' -i 1",
