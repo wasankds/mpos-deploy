@@ -1,4 +1,4 @@
-// await import(`./${mymoduleFolder}/myDbStart.js`)  // แยกไปทำตอนเปิดระบบครั้งแรก
+// await import(`./${mymoduleFolder}/myDbStart.js`)
 // import { MongoClient } from 'mongodb' ; 
 import 'dotenv/config' ; 
 import express from 'express' ; 
@@ -55,9 +55,8 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
   next()
 })
-if( process.env.USE_STARTAPP_ROUTER == 1 ) {
-  app.use((await import(`./${routesFolder}/startAppRouter.js`)).default) 
-}
+if( process.env.USE_STARTAPP_ROUTER == 1 ) 
+app.use((await import(`./${routesFolder}/startAppRouter.js`)).default) 
 app.use((await import(`./${routesFolder}/homeRouter.js`)).default) 
 app.use((await import(`./${routesFolder}/loginRouter.js`)).default)
 app.use((await import(`./${routesFolder}/manageSettingsRouter.js`)).default)

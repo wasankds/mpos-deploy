@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "mpos",
-  "version": "1.0.0",
+  "version": "2.0",
   "description": "",
   "main": "mpos.js",
   "scripts": {
