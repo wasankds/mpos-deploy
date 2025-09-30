@@ -8,7 +8,6 @@
 
   <% if(!IS_PRODUCTION) { %>
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/utils.css?v=<%= time %>">
-  <!-- <link rel="stylesheet" href="<= global.DOMAIN_ALLOW >/css/flexNew.css?v=<= time >"> -->
   <% } else { %>
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/doc_print.min.css">
   <% }  %>
@@ -54,14 +53,14 @@
   <!-- MAIN CONTAINER -->
   <main>
     <p class="al-c fw-b mg-b-l fs-m underline"><%= doc.docTitle %></p>
-    <p class="al-l ">เลขที่เอกสาร : <span class="fw-b box-black"><%= doc.docId %></span></p>
+    <p class="al-l ">เลขที่เอกสาร : <span class="fw-b"><%= doc.docId %></span></p>    
+    <p class="al-l">วันที่และเวลา : <span class="fw-b"><%= doc.docDateTime %></span></p>
     <p class="al-l ">สถานะ : 
       <span class="fw-b box-black"><%= doc.docStatusNumber %></span>
       <span class="fw-b"><%= doc.statusName %></span>
     </p>
-    <p class="al-l">วันที่และเวลา : <span class="fw-b"><%= doc.docDateTime %></span></p>
     <p class="al-l mg-t-m">สาขา : <span class="fw-b">[<%= doc.branchId %>] <%= doc.branchName %></span></p>
-    <p class="al-l">ยูสเซอร์ : <span class="fw-b">[<%= doc.userId %>] <%= doc.userFullname.length > 22 ? doc.userFullname.substring(0, 22) + '..' : doc.userFullname %></span></p>
+    <p class="al-l">ผู้บันทึกข้อมูล : <span class="fw-b">[<%= doc.userId %>] <%= doc.userFullname.length > 22 ? doc.userFullname.substring(0, 22) + '..' : doc.userFullname %></span></p>
 
     <% if(doc.supplierId) { %>
     <p class="al-l mg-t-m">ผู้จัดจำหน่าย : <span class="fw-b">[<%= doc.supplierId %>] <%= doc.supplierName %></span></p>
@@ -93,7 +92,7 @@
         <p class="al-l fw-b"><%= obj.description %></p>
         <p class="al-l">
           <span>จำนวน</span>
-          <span class="fw-b box-black"><%= obj.quantity ? obj.quantity : '-' %></span>
+          <span class="fw-b"><%= obj.quantity ? obj.quantity : '-' %></span>
           <span class="fw-b"><%= obj.unit %></span>
           <span>x</span>
           <span class="fw-b"><%= obj.price ? obj.price : '-' %></span>
@@ -104,7 +103,7 @@
       <% }) %>
     <% } %>
 
-    <!-- ฟอร์มให้เซ้นชื่อ -->
+    <!-- ฟอร์มให้เซ็นชื่อ -->
     <% if( doc.paymentMethod2 == 'Debt') { %>
     <section class="box-black mg-t-m pd-b-m">
       <p class="al-l pd-t-xl pd-b-xl">ผู้ค้างชำระ : </p>

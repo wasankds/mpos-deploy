@@ -12,7 +12,6 @@
           <i class="fas fa-house mg-r-m"></i>
         </a>
       </div>
-
      
       <!-- ปุ่ม#1 -->
       <div>
@@ -47,15 +46,14 @@
       <!-- select report -->
       <form id="nav_reportForm" method="get">
         <select id="nav_reportType" class="" title="รายงาน">
-          <option value="">-</option>
+          <option value="">--- รายงาน ---</option>
           <!--  -->
           <% NAV_REPORT_DOCS.forEach( (obj) => { %>
             <% if (!user.isAuth || !obj.userAuthorities.includes(user.userAuthority)) return; %>
             <option value="<%= obj.path %>" <%= title == obj.title ? 'selected' : '' %>>
               <%= obj.title %>
             </option>
-          <% }) %>          
-
+          <% }) %>
           <!--  -->
           <% NAV_REPORT_ITEMS.forEach( (obj) => { %>
             <% if (!user.isAuth || !obj.userAuthorities.includes(user.userAuthority)) return; %>
@@ -101,7 +99,6 @@
         <input type="hidden" id="userFullname_login" value="<%= user.userFullname %>">
         <input type="hidden" id="userAuthority_login" value="<%= user.userAuthority %>">
         <input type="hidden" id="userBranchId_login" value="<%= user.userBranchId %>">
-
       </form>
     </div>
     <% } %>

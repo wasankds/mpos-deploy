@@ -50,7 +50,6 @@
 
   <main >
 
-
     <!--  -->
     <form class="dp-n"
           id="excelForm" 
@@ -114,16 +113,15 @@
           <i class="fas fa-plus-circle"></i>
         </button>
 
-        <div class="nowrap">
-          <button class="btn btn-sm bg-upload pd-r-l pd-l-l" id="btnUploadTool" title="แสดงแถบเครื่องมืออัปโหลดไอเท็ม">
-            <!-- <i class="fas fa-eye pd-r-m"></i>ราคา -->
-            <!-- <i class="fas fa-eye"></i> -->
-            <i class="fas fa-file-excel"></i>
-          </button>
-          <!-- <button class="btn btn-sm bg-download pd-r-l pd-l-l" id="btnDownloadItems" title="ดาวน์โหลดไอเท็มเป็น Excel">
-            <i class="fas fa-download"></i>
-          </button> -->
-        </div>
+        <button class="btn btn-sm bg-upload pd-r-l pd-l-l" id="btnUploadTool" title="แสดงแถบเครื่องมืออัปโหลดไอเท็ม">
+          <i class="fas fa-file-excel"></i>
+        </button>
+
+        <% if(user.userAuthority == 'O'){ %>
+        <button class="btn btn-sm bg-clear pd-r-l pd-l-l" id="btnClearCollection" title="ล้างข้อมูลในคอลเลกชัน">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+        <% } %>
 
         <button class="btn btn-sm bg-clear pd-r-l pd-l-l" id="btnClearForm" title="ล้างข้อมูลในฟอร์ม">
           <i class="fas fa-eraser"></i>
@@ -816,12 +814,13 @@
 
   <!--  -->
   <script>
+    var PREFIX = `<%= PREFIX %>` ;
     var PATH_MAIN = `<%= PATH_MAIN %>` ;
     var PATH_FETCH = `<%= PATH_FETCH %>` ;
     var PATH_PRINT = `<%= PATH_PRINT %>` ;
     var PATH_DOWNLOAD_EXCEL = `<%= PATH_DOWNLOAD_EXCEL %>` ;
-    var PATH_UPLOAD_EXCEL = `<%= PATH_UPLOAD_EXCEL %>` ;
-    var PREFIX = `<%= PREFIX %>` ;
+    var PATH_UPLOAD_EXCEL = `<%= PATH_UPLOAD_EXCEL %>` ;    
+    var PATH_CLEAR_COLLECTION = `<%= user.userAuthority == 'O' ? PATH_CLEAR_COLLECTION : '' %>` ;
     var userAuthority = `<%= user.userAuthority %>` ;
     var DATA_USER_BRANCHES = JSON.parse(`<%- dataUserBranchesJson %>`) ;
   </script>

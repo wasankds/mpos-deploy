@@ -36,7 +36,7 @@
   <%- include('partials/notify.ejs', {msg:msg}) %> 
 
   <!-- -->
-  <header class="header-title">
+  <header class="header-title <%= bgClassColor %>">
     <p class="al-c fc-white">
       <span><%= title %></span>
     </p>
@@ -48,7 +48,10 @@
     <section class="main-left">
 
       <div class="flex-row">
-        <label class="col-sm-w100 al-c">รายงานสรุปไอเท็ม</label>
+        <label class="col-sm-w100 al-c">
+          <span>รายงานสรุปไอเท็ม</span>
+          <span class="fc-gray">[เอกสารสถานะ 2]</span>
+        </label>
       </div>
   
       <!-- เดือน -->
@@ -93,7 +96,10 @@
     <section class="main-right">
 
       <div class="flex-row">
-        <label class="col-sm-w100 al-c">รายงานแบบแตกไอเท็ม</label>
+        <label class="col-sm-w100 al-c">
+          <span>รายงานแตกไอเท็ม</span>
+          <span class="fc-gray">[เอกสารสถานะ 2]</span>
+        </label>
       </div>
       
       <div class="flex-row">

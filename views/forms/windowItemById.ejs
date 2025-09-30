@@ -104,7 +104,27 @@
           <td class="al-l">
             <span class="fc-blue clickable" 
                   onclick="loadItemById('<%= itm.itemId %>')"><%= itm.itemId %></span>
-            <span class="fc-blue">[<%= itm.itemAmount %>]</span>
+            <span>x</span>
+            <span class="fc-blue"><%= itm.itemAmount %></span>
+          </td>
+        </tr>
+        <% }) %>
+      <% } %>
+
+
+      <% if(doc.priceRows && doc.priceRows.length > 0){ %>
+        <tr>
+          <td></td>
+          <td>ราคาสาขา : </td>
+        </tr>
+        <% doc.priceRows.forEach( (branch, index) => { %>
+        <tr>
+          <td class="al-r"><%= index + 1 %>.)</td>
+          <td class="al-l">
+            <span class="fc-gray">[<%= branch.branchId %>]</span>
+            <span class="fc-green"><%= branch.branchName %></span>
+            <span>=</span>
+            <span class="fc-blue"><%= branch.branchPrice %></span>
           </td>
         </tr>
         <% }) %>
