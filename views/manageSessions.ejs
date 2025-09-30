@@ -109,6 +109,7 @@
             <th class="al-c clickable"><i class="fas fa-id-badge"></i></th>
             <th class="al-c clickable"><i class="fas fa-tag"></i> </th>
             <th class="al-c clickable"><i class="fas fa-user-tag"></i></th>
+            <th class="al-c clickable"><i class="fas fa-code-branch"></i></th>
             <th class="al-c clickable"><i class="fas fa-clock"></i></th>
             <th class="al-c"><i class="fas fa-bars"></i> </th>
           </tr>
@@ -124,6 +125,10 @@
             <td class="pd-l-s fc-cornblue" title="<%= obj.username %>"><%= obj.username??'-' %></td>
             <td class="al-c fc-blue" title="<%= obj.userId %>"><%= obj.userId??'-' %></td>
             <td class="al-c" title="<%= obj.userAuthority %>"><%= obj.userAuthority??'-' %></td>
+            <td class="pd-l-s" title="<%= obj.branchId %>">
+              <span class="fc-msg">[<%= obj.branchId??'-' %>]</span>
+              <span class="fc-darkgreen"><%= obj.branchName??'-' %></span>
+            </td>
             <td class="pd-r-s al-r" title="<%= obj.expiresFormat %>">
               <span class=""><%= obj.expiresFormat %></span>
               <span class="fc-cornblue">==></span>

@@ -6,26 +6,29 @@
 
   <!--  -->
   <div class="flex-row mg-t-l">          
-    <label class="col-sm-f" style="word-break: break-word; white-space: normal;">             
-      <span class="pd-r-s">✍</span> สำหรับการส่งอีเมล์ระบบ เช่น การแจ้งเตือนรหัสผ่านเมื่อสร้างยูสเซอร์</label>
+    <label class="col-sm-f lh-xs" style="word-break: break-word; white-space: normal;">             
+      <span class="pd-r-s">✍</span> สำหรับการส่งอีเมล์ระบบ เช่น การแจ้งเตือนรหัสผ่านเมื่อสร้างยูสเซอร์ หรือ การแจ้งลิงค์รีเซ็ตพาสเวิร์ด</label>
   </div>
 
   <!-- EMAIL_WHOSEND -->
   <div class="input-group mg-t-l">
     <label title="EMAIL_WHOSEND">ชื่อสำหรับส่งอีเมล</label> 
-    <input class="pd-l-m" type="email"
-            value="<%= settingsEmail?.EMAIL_WHOSEND ?? '' %>"
-            id="EMAIL_WHOSEND" name="EMAIL_WHOSEND" 
-            required placeholder="ชื่อสำหรับส่งอีเมล">
+    <input class="pd-l-m mg-t-m" type="email"
+           value="<%= settingsEmail?.EMAIL_WHOSEND ?? '' %>"
+           id="EMAIL_WHOSEND" name="EMAIL_WHOSEND" 
+           required placeholder="เช่น your-email@gmail.com">
   </div>
 
   <!-- EMAIL_PASS -->
   <div class="input-group mg-t-xl">
-    <label title="EMAIL_PASS">รหัสส่งอีเมลสำหรับแอปพลิเคชัน</label> 
-    <input class="pd-l-m" type="text" minlength="19" 
+    <label class="lh-xs" title="EMAIL_PASS">
+      <span>รหัสส่งอีเมลสำหรับแอปพลิเคชัน </span><br>
+      <span class="fs-s fc-gray">(บัญชี GMail/Google Workspace เท่านั้น)</span>
+    </label> 
+    <input class="pd-l-m mg-t-m" type="text" minlength="19" 
             value="<%= settingsEmail?.EMAIL_PASS ?? '' %>"
             id="EMAIL_PASS" name="EMAIL_PASS" 
-            required placeholder="รหัสส่งอีเมลสำหรับแอปพลิเคชัน">
+            required placeholder="เช่น xxxx-xxxx-xxxx-xxxx">
   </div>
 
   <!-- Buttons/Save -->
