@@ -104,15 +104,12 @@
     <% } %>
 
     <!-- ฟอร์มให้เซ็นชื่อ -->
-    <% if( doc.paymentMethod2 == 'Debt') { %>
+    <% if( doc.paymentMethod2 == 'Debt'  && doc.paymentAmount2_number > 0 ) { %>
     <section class="box-black mg-t-m pd-b-m">
       <p class="al-l pd-t-xl pd-b-xl">ผู้ค้างชำระ : </p>
       <p class="al-l pd-t-xl pd-b-xl mg-b-l">ลงชื่อ : </p>
     </section>
-    <% } %>
 
-    <!-- การชำระหนี้ -->
-    <% if( doc.paymentMethod2 == 'Debt') { %>
     <section class="mg-t-m pd-t-m bt-d bb-d">
       <% if( doc.payDebtRows && doc.payDebtRows.length > 0 ) { %>
         <p class="al-c">
